@@ -1,91 +1,243 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = await getCollection('blog');
+
+// Calculate real statistics
+const totalFiles = posts.length + 1; // posts + about
+const lastUpdated = posts.reduce((latest, post) => {
+	const postDate = new Date(post.data.pubDate);
+	return postDate > latest ? postDate : latest;
+}, new Date('2026-07-09')); // default fallback to current date
+
+let aiWorkflowCount = 0;
+let automationCount = 0;
+let docsSlidesCount = 0;
+let macosWindowsCount = 0;
+let toolsCount = 0;
+let thingsBrokeCount = 0;
+
+posts.forEach(post => {
+	const title = post.data.title.toLowerCase();
+	const desc = post.data.description.toLowerCase();
+	const tags = (post.id || '').toLowerCase();
+	
+	// Categorize based on content keywords
+	if (title.includes('codex') || desc.includes('codex') || tags.includes('codex') || title.includes('ai') || desc.includes('ai')) {
+		aiWorkflowCount++;
+	}
+	if (title.includes('자동화') || desc.includes('자동화') || title.includes('automation') || desc.includes('automation') || title.includes('action')) {
+		automationCount++;
+	}
+	if (title.includes('문서') || desc.includes('문서') || title.includes('document') || desc.includes('slide') || title.includes('프레젠테이션')) {
+		docsSlidesCount++;
+	}
+	if (title.includes('macos') || desc.includes('macos') || title.includes('windows') || desc.includes('windows') || title.includes('단축키')) {
+		macosWindowsCount++;
+	}
+	if (title.includes('도구') || desc.includes('도구') || title.includes('tool') || desc.includes('tool')) {
+		toolsCount++;
+	}
+	if (title.includes('고장') || desc.includes('고장') || title.includes('시행착오') || title.includes('broke') || desc.includes('cua')) {
+		// things-broke category (like background usage issues)
+		thingsBrokeCount++;
+	}
+});
 ---
 
 <!doctype html>
 <html lang="ko">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.home-grid {
+				display: grid;
+				grid-template-columns: 1.2fr 0.8fr;
+				gap: 2rem;
+				margin-top: 1rem;
+			}
+			.intro-section {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+			.intro-title {
+				font-size: 2.25rem;
+				color: var(--green);
+				margin-top: 0;
+				margin-bottom: 1.5rem;
+			}
+			.intro-text {
+				font-size: 1.05rem;
+				line-height: 1.8;
+				margin-bottom: 2rem;
+			}
+			.signature-block {
+				margin-bottom: 2.5rem;
+				border-left: 2px solid var(--border);
+				padding-left: 1rem;
+			}
+			.signature-text {
+				font-family: var(--font-body);
+				color: var(--text);
+				font-size: 1rem;
+				line-height: 1.6;
+				margin: 0;
+			}
+			.panel {
+				background-color: var(--panel);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 1.25rem;
+				font-family: var(--font-mono);
+			}
+			.panel-title {
+				font-size: 0.85rem;
+				color: var(--yellow);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				margin-top: 0;
+				margin-bottom: 0.75rem;
+				border-bottom: 1px solid var(--border);
+				padding-bottom: 0.5rem;
+			}
+			.panel-title.crooked {
+				transform: rotate(-1.5deg);
+				display: inline-block;
+			}
+			.status-item {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 0.5rem;
+				font-size: 0.9rem;
+				gap: 1rem;
+			}
+			.status-label {
+				color: var(--muted);
+				white-space: nowrap;
+			}
+			.status-val {
+				color: var(--text);
+				white-space: nowrap;
+				text-align: right;
+			}
+			.status-val.ok {
+				color: var(--green);
+			}
+			.status-comment {
+				font-size: 0.75rem;
+				color: var(--muted);
+				font-style: italic;
+				margin-left: 0.25rem;
+			}
+			.tree-view {
+				white-space: pre-wrap;
+				font-size: 0.9rem;
+				line-height: 1.6;
+				overflow-x: auto;
+				color: var(--text);
+				margin: 0;
+				padding: 0;
+				background: transparent;
+				border: none;
+			}
+			.tree-link {
+				color: var(--accent);
+			}
+			.tree-link:hover {
+				color: var(--green);
+				text-decoration: underline;
+			}
+			.help-prompt {
+				margin-top: 3rem;
+				font-family: var(--font-mono);
+				font-size: 0.95rem;
+				color: var(--muted);
+				border-top: 1px dashed var(--border);
+				padding-top: 1.5rem;
+			}
+			.help-prompt a {
+				color: var(--green);
+				font-weight: bold;
+			}
+
+			@media (max-width: 768px) {
+				.home-grid {
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
+				}
+				.intro-title {
+					font-size: 1.85rem;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
-
 		<main>
-			<section>
-				<p>Joseph’s Working Notes</p>
+			<div class="home-grid">
+				<div class="intro-section">
+					<div>
+						<h1 class="intro-title">Joseph’s Working Notes</h1>
+						<div class="intro-text">
+							<p>이것저것 다 써봤습니다. 그래서 이제 덜 쓰려고 합니다.</p>
+							<p>AI, 자동화, 문서, 맥과 윈도우. 직접 써보고 남길 만한 것만 기록합니다.</p>
+						</div>
+					</div>
 
-				<h1>기술과 업무를 더 단순하고 효율적으로 만드는 기록</h1>
+					<div class="signature-block">
+						<p class="signature-text">돌아는 갑니다.</p>
+						<p class="signature-text">계속 쓸지는 모르겠습니다.</p>
+					</div>
 
-				<p>
-					AI 워크플로우, Codex 운영, 자동화, 문서 제작, macOS와 Windows 유지보수,
-					그리고 직접 사용하며 검증한 도구와 방법을 기록합니다.
-				</p>
+					<div class="panel">
+						<div class="panel-title crooked">system status</div>
+						<div class="status-item">
+							<span class="status-label">notes:</span>
+							<span class="status-val">{posts.length} file(s)</span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">last updated:</span>
+							<span class="status-val"><FormattedDate date={lastUpdated} /></span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">build:</span>
+							<span class="status-val ok">ok <span class="status-comment">(at least for now)</span></span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">deploy:</span>
+							<span class="status-val">github pages</span>
+						</div>
+					</div>
+				</div>
 
-				<p>
-					단순한 기능 소개보다는 실제 업무에서 무엇이 효과적이었는지,
-					어떤 문제가 발생했는지, 그리고 어떻게 개선했는지를 중심으로 정리합니다.
-				</p>
+				<div class="overview-section">
+					<div class="panel">
+						<div class="panel-title">site overview</div>
+						<pre class="tree-view">.
+├── <a href="/blog/" class="tree-link">blog/</a>                     {posts.length}
+│   ├── AI WORKFLOW           {aiWorkflowCount}
+│   ├── AUTOMATION            {automationCount}
+│   ├── DOCS / SLIDES         {docsSlidesCount}
+│   ├── MACOS / WINDOWS       {macosWindowsCount}
+│   ├── TOOLS                 {toolsCount}
+│   └── THINGS THAT BROKE     {thingsBrokeCount}
+└── <a href="/about/" class="tree-link">about/</a>                    1
 
-				<p>
-					<a href="/blog/">최근 글 보기</a>
-				</p>
-			</section>
+total files               {totalFiles}</pre>
+					</div>
+				</div>
+			</div>
 
-			<section>
-				<h2>주요 주제</h2>
-
-				<ul>
-					<li>
-						<strong>AI Workflow</strong>
-						<br />
-						ChatGPT, Codex와 에이전트 기반 업무 흐름을 실제 환경에 적용한 기록
-					</li>
-					<li>
-						<strong>Automation</strong>
-						<br />
-						반복 업무, 문서 작성, 검토와 배포를 단순화하는 자동화 방법
-					</li>
-					<li>
-						<strong>Documents &amp; Slides</strong>
-						<br />
-						보고서, 제안서, 프레젠테이션 제작 과정과 품질 개선 경험
-					</li>
-					<li>
-						<strong>macOS &amp; Windows</strong>
-						<br />
-						운영체제 유지보수, 개발 환경 관리와 실용적인 도구 활용법
-					</li>
-					<li>
-						<strong>Tools</strong>
-						<br />
-						직접 개발하거나 검토한 소프트웨어와 오픈소스 도구
-					</li>
-					<li>
-						<strong>Lessons Learned</strong>
-						<br />
-						시행착오를 통해 얻은 운영 원칙과 재발 방지 기록
-					</li>
-				</ul>
-			</section>
-
-			<section>
-				<h2>이 블로그에 대하여</h2>
-
-				<p>
-					이곳은 완성된 정답을 소개하는 공간이라기보다,
-					실제 업무와 기술 환경에서 발견한 문제와 해결 과정을 축적하는 작업 노트입니다.
-				</p>
-
-				<p>
-					새로운 도구를 무조건 추가하기보다는 기존 흐름을 더 안정적이고 간단하게 만드는 데
-					도움이 되는지를 우선적으로 살펴봅니다.
-				</p>
-			</section>
+			<div class="help-prompt">
+				$ <a href="/about/">joseph --help</a>
+			</div>
 		</main>
-
 		<Footer />
 	</body>
 </html>
