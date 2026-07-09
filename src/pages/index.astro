@@ -6,44 +6,86 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
+
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section>
+				<p>Joseph’s Working Notes</p>
+
+				<h1>기술과 업무를 더 단순하고 효율적으로 만드는 기록</h1>
+
+				<p>
+					AI 워크플로우, Codex 운영, 자동화, 문서 제작, macOS와 Windows 유지보수,
+					그리고 직접 사용하며 검증한 도구와 방법을 기록합니다.
+				</p>
+
+				<p>
+					단순한 기능 소개보다는 실제 업무에서 무엇이 효과적이었는지,
+					어떤 문제가 발생했는지, 그리고 어떻게 개선했는지를 중심으로 정리합니다.
+				</p>
+
+				<p>
+					<a href="/blog/">최근 글 보기</a>
+				</p>
+			</section>
+
+			<section>
+				<h2>주요 주제</h2>
+
+				<ul>
+					<li>
+						<strong>AI Workflow</strong>
+						<br />
+						ChatGPT, Codex와 에이전트 기반 업무 흐름을 실제 환경에 적용한 기록
+					</li>
+					<li>
+						<strong>Automation</strong>
+						<br />
+						반복 업무, 문서 작성, 검토와 배포를 단순화하는 자동화 방법
+					</li>
+					<li>
+						<strong>Documents &amp; Slides</strong>
+						<br />
+						보고서, 제안서, 프레젠테이션 제작 과정과 품질 개선 경험
+					</li>
+					<li>
+						<strong>macOS &amp; Windows</strong>
+						<br />
+						운영체제 유지보수, 개발 환경 관리와 실용적인 도구 활용법
+					</li>
+					<li>
+						<strong>Tools</strong>
+						<br />
+						직접 개발하거나 검토한 소프트웨어와 오픈소스 도구
+					</li>
+					<li>
+						<strong>Lessons Learned</strong>
+						<br />
+						시행착오를 통해 얻은 운영 원칙과 재발 방지 기록
+					</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>이 블로그에 대하여</h2>
+
+				<p>
+					이곳은 완성된 정답을 소개하는 공간이라기보다,
+					실제 업무와 기술 환경에서 발견한 문제와 해결 과정을 축적하는 작업 노트입니다.
+				</p>
+
+				<p>
+					새로운 도구를 무조건 추가하기보다는 기존 흐름을 더 안정적이고 간단하게 만드는 데
+					도움이 되는지를 우선적으로 살펴봅니다.
+				</p>
+			</section>
 		</main>
+
 		<Footer />
 	</body>
 </html>
