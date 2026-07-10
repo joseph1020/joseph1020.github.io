@@ -1,243 +1,72 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import FormattedDate from '../components/FormattedDate.astro';
-
-const posts = await getCollection('blog');
-
-// Calculate real statistics
-const totalFiles = posts.length + 1; // posts + about
-const lastUpdated = posts.reduce((latest, post) => {
-	const postDate = new Date(post.data.pubDate);
-	return postDate > latest ? postDate : latest;
-}, new Date('2026-07-09')); // default fallback to current date
-
-let aiWorkflowCount = 0;
-let automationCount = 0;
-let docsSlidesCount = 0;
-let macosWindowsCount = 0;
-let toolsCount = 0;
-let thingsBrokeCount = 0;
-
-posts.forEach(post => {
-	const title = post.data.title.toLowerCase();
-	const desc = post.data.description.toLowerCase();
-	const tags = (post.id || '').toLowerCase();
-	
-	// Categorize based on content keywords
-	if (title.includes('codex') || desc.includes('codex') || tags.includes('codex') || title.includes('ai') || desc.includes('ai')) {
-		aiWorkflowCount++;
-	}
-	if (title.includes('자동화') || desc.includes('자동화') || title.includes('automation') || desc.includes('automation') || title.includes('action')) {
-		automationCount++;
-	}
-	if (title.includes('문서') || desc.includes('문서') || title.includes('document') || desc.includes('slide') || title.includes('프레젠테이션')) {
-		docsSlidesCount++;
-	}
-	if (title.includes('macos') || desc.includes('macos') || title.includes('windows') || desc.includes('windows') || title.includes('단축키')) {
-		macosWindowsCount++;
-	}
-	if (title.includes('도구') || desc.includes('도구') || title.includes('tool') || desc.includes('tool')) {
-		toolsCount++;
-	}
-	if (title.includes('고장') || desc.includes('고장') || title.includes('시행착오') || title.includes('broke') || desc.includes('cua')) {
-		// things-broke category (like background usage issues)
-		thingsBrokeCount++;
-	}
-});
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={SITE_TITLE}
+			description={SITE_DESCRIPTION}
+			canonicalPath="/"
+			alternatePaths={{ ko: '/ko/', en: '/en/' }}
+		/>
+		<meta name="robots" content="noindex,follow" />
+		<script is:inline>
+			const saved = localStorage.getItem('preferredLocale');
+			const locale = saved === 'ko' || saved === 'en'
+				? saved
+				: navigator.language.toLowerCase().startsWith('ko')
+					? 'ko'
+					: 'en';
+			window.location.replace(`/${locale}/`);
+		</script>
 		<style>
-			.home-grid {
-				display: grid;
-				grid-template-columns: 1.2fr 0.8fr;
-				gap: 2rem;
-				margin-top: 1rem;
-			}
-			.intro-section {
+			main {
+				max-width: 720px;
+				min-height: 70vh;
 				display: flex;
 				flex-direction: column;
-				justify-content: space-between;
+				justify-content: center;
+				gap: 1.5rem;
 			}
-			.intro-title {
-				font-size: 2.25rem;
+			.locale-title {
+				font-family: var(--font-mono);
 				color: var(--green);
-				margin-top: 0;
-				margin-bottom: 1.5rem;
-			}
-			.intro-text {
-				font-size: 1.05rem;
-				line-height: 1.8;
-				margin-bottom: 2rem;
-			}
-			.signature-block {
-				margin-bottom: 2.5rem;
-				border-left: 2px solid var(--border);
-				padding-left: 1rem;
-			}
-			.signature-text {
-				font-family: var(--font-body);
-				color: var(--text);
-				font-size: 1rem;
-				line-height: 1.6;
 				margin: 0;
 			}
-			.panel {
-				background-color: var(--panel);
+			.locale-links {
+				display: flex;
+				gap: 0.75rem;
+				font-family: var(--font-mono);
+			}
+			.locale-links a {
 				border: 1px solid var(--border);
 				border-radius: 4px;
-				padding: 1.25rem;
-				font-family: var(--font-mono);
-			}
-			.panel-title {
-				font-size: 0.85rem;
-				color: var(--yellow);
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-				margin-top: 0;
-				margin-bottom: 0.75rem;
-				border-bottom: 1px solid var(--border);
-				padding-bottom: 0.5rem;
-			}
-			.panel-title.crooked {
-				transform: rotate(-1.5deg);
-				display: inline-block;
-			}
-			.status-item {
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: 0.5rem;
-				font-size: 0.9rem;
-				gap: 1rem;
-			}
-			.status-label {
-				color: var(--muted);
-				white-space: nowrap;
-			}
-			.status-val {
-				color: var(--text);
-				white-space: nowrap;
-				text-align: right;
-			}
-			.status-val.ok {
-				color: var(--green);
-			}
-			.status-comment {
-				font-size: 0.75rem;
-				color: var(--muted);
-				font-style: italic;
-				margin-left: 0.25rem;
-			}
-			.tree-view {
-				white-space: pre-wrap;
-				font-size: 0.9rem;
-				line-height: 1.6;
-				overflow-x: auto;
-				color: var(--text);
-				margin: 0;
-				padding: 0;
-				background: transparent;
-				border: none;
-			}
-			.tree-link {
-				color: var(--accent);
-			}
-			.tree-link:hover {
-				color: var(--green);
-				text-decoration: underline;
-			}
-			.help-prompt {
-				margin-top: 3rem;
-				font-family: var(--font-mono);
-				font-size: 0.95rem;
-				color: var(--muted);
-				border-top: 1px dashed var(--border);
-				padding-top: 1.5rem;
-			}
-			.help-prompt a {
-				color: var(--green);
-				font-weight: bold;
-			}
-
-			@media (max-width: 768px) {
-				.home-grid {
-					grid-template-columns: 1fr;
-					gap: 1.5rem;
-				}
-				.intro-title {
-					font-size: 1.85rem;
-				}
+				padding: 0.65rem 0.8rem;
+				background: var(--panel);
 			}
 		</style>
 	</head>
 	<body>
-		<Header />
 		<main>
-			<div class="home-grid">
-				<div class="intro-section">
-					<div>
-						<h1 class="intro-title">Joseph’s Working Notes</h1>
-						<div class="intro-text">
-							<p>이것저것 다 써봤습니다. 그래서 이제 덜 쓰려고 합니다.</p>
-							<p>AI, 자동화, 문서, 맥과 윈도우. 직접 써보고 남길 만한 것만 기록합니다.</p>
-						</div>
-					</div>
-
-					<div class="signature-block">
-						<p class="signature-text">돌아는 갑니다.</p>
-						<p class="signature-text">계속 쓸지는 모르겠습니다.</p>
-					</div>
-
-					<div class="panel">
-						<div class="panel-title crooked">system status</div>
-						<div class="status-item">
-							<span class="status-label">notes:</span>
-							<span class="status-val">{posts.length} file(s)</span>
-						</div>
-						<div class="status-item">
-							<span class="status-label">last updated:</span>
-							<span class="status-val"><FormattedDate date={lastUpdated} /></span>
-						</div>
-						<div class="status-item">
-							<span class="status-label">build:</span>
-							<span class="status-val ok">ok <span class="status-comment">(at least for now)</span></span>
-						</div>
-						<div class="status-item">
-							<span class="status-label">deploy:</span>
-							<span class="status-val">github pages</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="overview-section">
-					<div class="panel">
-						<div class="panel-title">site overview</div>
-						<pre class="tree-view">.
-├── <a href="/blog/" class="tree-link">blog/</a>                     {posts.length}
-│   ├── AI WORKFLOW           {aiWorkflowCount}
-│   ├── AUTOMATION            {automationCount}
-│   ├── DOCS / SLIDES         {docsSlidesCount}
-│   ├── MACOS / WINDOWS       {macosWindowsCount}
-│   ├── TOOLS                 {toolsCount}
-│   └── THINGS THAT BROKE     {thingsBrokeCount}
-└── <a href="/about/" class="tree-link">about/</a>                    1
-
-total files               {totalFiles}</pre>
-					</div>
-				</div>
-			</div>
-
-			<div class="help-prompt">
-				$ <a href="/about/">joseph --help</a>
+			<h1 class="locale-title">Joseph’s Working Notes</h1>
+			<p>Choose a language. JavaScript will remember your manual choice and otherwise use your browser language.</p>
+			<div class="locale-links">
+				<a href="/ko/" data-locale="ko">KO</a>
+				<a href="/en/" data-locale="en">EN</a>
 			</div>
 		</main>
-		<Footer />
+		<script>
+			document.querySelectorAll('[data-locale]').forEach((link) => {
+				link.addEventListener('click', () => {
+					const locale = link.getAttribute('data-locale');
+					if (locale === 'ko' || locale === 'en') {
+						localStorage.setItem('preferredLocale', locale);
+					}
+				});
+			});
+		</script>
 	</body>
 </html>

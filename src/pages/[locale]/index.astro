@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { locales, parseBlogId, type Locale, ui } from '../../i18n/ui';
+
+export function getStaticPaths() {
+	return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const copy = ui[locale];
+const allPosts = await getCollection('blog');
+const posts = allPosts.filter((post) => parseBlogId(post.id).locale === locale);
+
+const totalFiles = posts.length + 1;
+const lastUpdated = posts.reduce((latest, post) => {
+	const postDate = new Date(post.data.pubDate);
+	return postDate > latest ? postDate : latest;
+}, new Date('2026-07-09'));
+
+let aiWorkflowCount = 0;
+let automationCount = 0;
+let docsSlidesCount = 0;
+let macosWindowsCount = 0;
+let toolsCount = 0;
+let thingsBrokeCount = 0;
+
+posts.forEach((post) => {
+	const title = post.data.title.toLowerCase();
+	const desc = post.data.description.toLowerCase();
+	const tags = parseBlogId(post.id).slug.toLowerCase();
+
+	if (title.includes('codex') || desc.includes('codex') || tags.includes('codex') || title.includes('ai') || desc.includes('ai')) aiWorkflowCount++;
+	if (title.includes('자동화') || desc.includes('자동화') || title.includes('automation') || desc.includes('automation') || title.includes('action')) automationCount++;
+	if (title.includes('문서') || desc.includes('문서') || title.includes('document') || desc.includes('slide') || title.includes('프레젠테이션')) docsSlidesCount++;
+	if (title.includes('macos') || desc.includes('macos') || title.includes('windows') || desc.includes('windows') || title.includes('단축키')) macosWindowsCount++;
+	if (title.includes('도구') || desc.includes('도구') || title.includes('tool') || desc.includes('tool')) toolsCount++;
+	if (title.includes('고장') || desc.includes('고장') || title.includes('시행착오') || title.includes('broke') || desc.includes('cua')) thingsBrokeCount++;
+});
+
+const alternatePaths = { ko: '/ko/', en: '/en/' };
+---
+
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<BaseHead title={SITE_TITLE} description={copy.siteDescription} locale={locale} canonicalPath={`/${locale}/`} alternatePaths={alternatePaths} />
+		<style>
+			.home-grid {
+				display: grid;
+				grid-template-columns: 1.2fr 0.8fr;
+				gap: 2rem;
+				margin-top: 1rem;
+			}
+			.intro-section {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+			.intro-title {
+				font-size: 2.25rem;
+				color: var(--green);
+				margin-top: 0;
+				margin-bottom: 1.5rem;
+			}
+			.intro-text {
+				font-size: 1.05rem;
+				line-height: 1.8;
+				margin-bottom: 2rem;
+			}
+			.signature-block {
+				margin-bottom: 2.5rem;
+				border-left: 2px solid var(--border);
+				padding-left: 1rem;
+			}
+			.signature-text {
+				font-family: var(--font-body);
+				color: var(--text);
+				font-size: 1rem;
+				line-height: 1.6;
+				margin: 0;
+			}
+			.panel {
+				background-color: var(--panel);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 1.25rem;
+				font-family: var(--font-mono);
+			}
+			.panel-title {
+				font-size: 0.85rem;
+				color: var(--yellow);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				margin-top: 0;
+				margin-bottom: 0.75rem;
+				border-bottom: 1px solid var(--border);
+				padding-bottom: 0.5rem;
+			}
+			.panel-title.crooked {
+				transform: rotate(-1.5deg);
+				display: inline-block;
+			}
+			.status-item {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 0.5rem;
+				font-size: 0.9rem;
+				gap: 1rem;
+			}
+			.status-label {
+				color: var(--muted);
+				white-space: nowrap;
+			}
+			.status-val {
+				color: var(--text);
+				white-space: nowrap;
+				text-align: right;
+			}
+			.status-val.ok {
+				color: var(--green);
+			}
+			.status-comment {
+				font-size: 0.75rem;
+				color: var(--muted);
+				font-style: italic;
+				margin-left: 0.25rem;
+			}
+			.tree-view {
+				white-space: pre-wrap;
+				font-size: 0.9rem;
+				line-height: 1.6;
+				overflow-x: auto;
+				color: var(--text);
+				margin: 0;
+				padding: 0;
+				background: transparent;
+				border: none;
+			}
+			.tree-link {
+				color: var(--accent);
+			}
+			.tree-link:hover {
+				color: var(--green);
+				text-decoration: underline;
+			}
+			.help-prompt {
+				margin-top: 3rem;
+				font-family: var(--font-mono);
+				font-size: 0.95rem;
+				color: var(--muted);
+				border-top: 1px dashed var(--border);
+				padding-top: 1.5rem;
+			}
+			.help-prompt a {
+				color: var(--green);
+				font-weight: bold;
+			}
+
+			@media (max-width: 768px) {
+				.home-grid {
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
+				}
+				.intro-title {
+					font-size: 1.85rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header locale={locale} alternatePaths={alternatePaths} />
+		<main>
+			<div class="home-grid">
+				<div class="intro-section">
+					<div>
+						<h1 class="intro-title">Joseph’s Working Notes</h1>
+						<div class="intro-text">
+							{copy.homeIntro.map((line) => <p>{line}</p>)}
+						</div>
+					</div>
+
+					<div class="signature-block">
+						{copy.signature.map((line) => <p class="signature-text">{line}</p>)}
+					</div>
+
+					<div class="panel">
+						<div class="panel-title crooked">system status</div>
+						<div class="status-item">
+							<span class="status-label">notes:</span>
+							<span class="status-val">{posts.length} file(s)</span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">last updated:</span>
+							<span class="status-val"><FormattedDate date={lastUpdated} /></span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">build:</span>
+							<span class="status-val ok">ok <span class="status-comment">(at least for now)</span></span>
+						</div>
+						<div class="status-item">
+							<span class="status-label">deploy:</span>
+							<span class="status-val">github pages</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="overview-section">
+					<div class="panel">
+						<div class="panel-title">site overview</div>
+						<pre class="tree-view">.
+├── <a href={`/${locale}/blog/`} class="tree-link">blog/</a>                     {posts.length}
+│   ├── AI WORKFLOW           {aiWorkflowCount}
+│   ├── AUTOMATION            {automationCount}
+│   ├── DOCS / SLIDES         {docsSlidesCount}
+│   ├── MACOS / WINDOWS       {macosWindowsCount}
+│   ├── TOOLS                 {toolsCount}
+│   └── THINGS THAT BROKE     {thingsBrokeCount}
+└── <a href={`/${locale}/about/`} class="tree-link">about/</a>                    1
+
+total files               {totalFiles}</pre>
+					</div>
+				</div>
+			</div>
+
+			<div class="help-prompt">
+				$ <a href={`/${locale}/about/`}>joseph --help</a>
+			</div>
+		</main>
+		<Footer locale={locale} />
+	</body>
+</html>

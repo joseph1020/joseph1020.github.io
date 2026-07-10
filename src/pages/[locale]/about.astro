@@ -1,17 +1,26 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { locales, type Locale, ui } from '../../i18n/ui';
+
+export function getStaticPaths() {
+	return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const copy = ui[locale];
+const alternatePaths = { ko: '/ko/about/', en: '/en/about/' };
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang={locale}>
 	<head>
-		<BaseHead title={`About - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<BaseHead title={`About - ${SITE_TITLE}`} description={copy.siteDescription} locale={locale} canonicalPath={`/${locale}/about/`} alternatePaths={alternatePaths} />
 		<style>
 			main {
-				max-width: 800px; /* Quieter, slightly narrower than post view for readability */
+				max-width: 800px;
 				margin: 0 auto;
 				padding: 3rem 1.5rem;
 			}
@@ -29,15 +38,12 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				color: var(--muted);
 				user-select: none;
 			}
-			
-			/* Quiet section styling inspired by manual/help pages */
 			.help-section {
 				margin-bottom: 2rem;
 				display: grid;
 				grid-template-columns: 180px 1fr;
 				gap: 1.5rem;
 			}
-			
 			.section-name {
 				font-family: var(--font-mono);
 				font-weight: 700;
@@ -48,7 +54,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				margin: 0;
 				padding-top: 0.1rem;
 			}
-			
 			.section-content {
 				margin: 0;
 				color: var(--text);
@@ -61,7 +66,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			.section-content p:last-child {
 				margin-bottom: 0;
 			}
-			
 			.signature-block {
 				margin-top: 4rem;
 				border-top: 1px dashed var(--border);
@@ -97,7 +101,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		</style>
 	</head>
 	<body>
-		<Header />
+		<Header locale={locale} alternatePaths={alternatePaths} />
 		<main>
 			<h1 class="help-title">
 				<span class="help-prompt">$</span> joseph --help
@@ -113,40 +117,38 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			<div class="help-section">
 				<h2 class="section-name">DESCRIPTION</h2>
 				<div class="section-content">
-					<p>기술, 사업, 문서, 자동화가 서로 꼬이지 않게 정리하는 일을 합니다.</p>
+					<p>{copy.aboutDescription}</p>
 				</div>
 			</div>
 
 			<div class="help-section">
 				<h2 class="section-name">INTERESTS</h2>
 				<div class="section-content">
-					<p>AI 워크플로우, 자동화, 문서와 슬라이드, 맥과 윈도우를 다룹니다.</p>
+					<p>{copy.aboutInterests}</p>
 				</div>
 			</div>
 
 			<div class="help-section">
 				<h2 class="section-name">PREFERENCES</h2>
 				<div class="section-content">
-					<p>새로운 도구는 좋아하지만, 도구를 관리하느라 일이 늘어나는 건 싫어합니다.</p>
-					<p>복잡하고 거창한 방법보다 직관적이고 오래 쓸 수 있는 단순한 방법을 선호합니다.</p>
+					{copy.aboutPreferences.map((line) => <p>{line}</p>)}
 				</div>
 			</div>
 
 			<div class="help-section">
 				<h2 class="section-name">NOTES</h2>
 				<div class="section-content">
-					<p>잘된 일보다 왜 일이 꼬였는지, 어떻게 풀었는지를 더 자주 적습니다.</p>
+					<p>{copy.aboutNotes}</p>
 				</div>
 			</div>
 
 			<div class="signature-block">
-				<p class="signature-text">돌아는 갑니다.</p>
-				<p class="signature-text">계속 쓸지는 모르겠습니다.</p>
+				{copy.signature.map((line) => <p class="signature-text">{line}</p>)}
 				<div class="exit-code">
 					// exit code: 0
 				</div>
 			</div>
 		</main>
-		<Footer />
+		<Footer locale={locale} />
 	</body>
 </html>

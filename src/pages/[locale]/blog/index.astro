@@ -1,20 +1,28 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_TITLE } from '../../../consts';
+import { blogPath, locales, parseBlogId, type Locale, ui } from '../../../i18n/ui';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+export function getStaticPaths() {
+	return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const copy = ui[locale];
+const posts = (await getCollection('blog'))
+	.filter((post) => parseBlogId(post.id).locale === locale)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const alternatePaths = { ko: '/ko/blog/', en: '/en/blog/' };
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang={locale}>
 	<head>
-		<BaseHead title={`작업 기록 - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<BaseHead title={`${copy.blogTitle} - ${SITE_TITLE}`} description={copy.siteDescription} locale={locale} canonicalPath={`/${locale}/blog/`} alternatePaths={alternatePaths} />
 		<style>
 			.blog-intro {
 				margin-bottom: 2.5rem;
@@ -34,7 +42,6 @@ const posts = (await getCollection('blog')).sort(
 				line-height: 1.6;
 				margin: 0;
 			}
-			
 			.rgia-container {
 				background-color: var(--panel);
 				border: 1px solid var(--border);
@@ -51,20 +58,20 @@ const posts = (await getCollection('blog')).sort(
 				border-bottom: 1px solid var(--border);
 				font-size: 0.85rem;
 				color: var(--muted);
+				gap: 1rem;
 			}
 			.rgia-prompt {
 				color: var(--yellow);
+				overflow-wrap: anywhere;
 			}
 			.rgia-count {
 				color: var(--green);
+				white-space: nowrap;
 			}
-			
 			.results-grid {
 				display: flex;
 				flex-direction: column;
 			}
-			
-			/* Desktop Table Styling using CSS Grid */
 			.grid-row {
 				display: grid;
 				grid-template-columns: 220px 1.5fr 110px 2fr;
@@ -77,14 +84,12 @@ const posts = (await getCollection('blog')).sort(
 			.grid-row:last-child {
 				border-bottom: none;
 			}
-			
 			.grid-header-row {
 				background-color: rgba(255, 255, 255, 0.02);
 				color: var(--muted);
 				font-weight: bold;
 				border-bottom: 2px solid var(--border);
 			}
-			
 			.grid-data-row {
 				color: var(--text);
 				text-decoration: none;
@@ -97,7 +102,6 @@ const posts = (await getCollection('blog')).sort(
 			.grid-data-row:hover .col-title {
 				color: var(--green);
 			}
-			
 			.col-path {
 				color: var(--accent);
 				overflow-wrap: anywhere;
@@ -128,6 +132,13 @@ const posts = (await getCollection('blog')).sort(
 			}
 
 			@media (max-width: 820px) {
+				.rgia-header {
+					align-items: flex-start;
+					flex-direction: column;
+				}
+				.rgia-count {
+					white-space: normal;
+				}
 				.grid-header-row {
 					display: none;
 				}
@@ -157,11 +168,11 @@ const posts = (await getCollection('blog')).sort(
 		</style>
 	</head>
 	<body>
-		<Header />
+		<Header locale={locale} alternatePaths={alternatePaths} />
 		<main>
 			<div class="blog-intro">
-				<h1 class="blog-title">작업 기록</h1>
-				<p class="blog-subtitle">써본 것, 고장 난 것, 괜히 손댄 것.</p>
+				<h1 class="blog-title">{copy.blogTitle}</h1>
+				<p class="blog-subtitle">{copy.blogSubtitle}</p>
 			</div>
 
 			<div class="rgia-container">
@@ -176,25 +187,28 @@ const posts = (await getCollection('blog')).sort(
 						<div>DATE</div>
 						<div>SUMMARY</div>
 					</div>
-					{posts.map((post) => (
-						<a href={`/blog/${post.id}/`} class="grid-row grid-data-row">
-							<div class="col-path">/blog/{post.id}/</div>
-							<div class="col-title">{post.data.title}</div>
-							<div class="col-date">
-								<FormattedDate date={post.data.pubDate} />
-							</div>
-							<div class="col-summary">
-								{post.data.description}
-							</div>
-						</a>
-					))}
+					{posts.map((post) => {
+						const { slug } = parseBlogId(post.id);
+						return (
+							<a href={blogPath(locale, slug)} class="grid-row grid-data-row">
+								<div class="col-path">{blogPath(locale, slug)}</div>
+								<div class="col-title">{post.data.title}</div>
+								<div class="col-date">
+									<FormattedDate date={post.data.pubDate} />
+								</div>
+								<div class="col-summary">
+									{post.data.description}
+								</div>
+							</a>
+						);
+					})}
 				</div>
 			</div>
-			
+
 			<div class="list-footnote">
-				// 아직 한 편입니다.
+				{copy.blogFootnote}
 			</div>
 		</main>
-		<Footer />
+		<Footer locale={locale} />
 	</body>
 </html>

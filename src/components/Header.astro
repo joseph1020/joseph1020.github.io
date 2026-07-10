@@ -1,17 +1,43 @@
 ---
 import { SITE_TITLE } from '../consts';
+import type { Locale } from '../i18n/ui';
 import HeaderLink from './HeaderLink.astro';
+
+interface Props {
+	locale: Locale;
+	availableLocales?: Locale[];
+	alternatePaths?: Partial<Record<Locale, string>>;
+}
+
+const { locale, availableLocales = ['ko', 'en'], alternatePaths = {} } = Astro.props;
+const switchers = availableLocales
+	.map((targetLocale) => ({
+		locale: targetLocale,
+		href: alternatePaths[targetLocale],
+		label: targetLocale.toUpperCase(),
+		active: targetLocale === locale,
+	}))
+	.filter((item) => item.href);
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<h2><a href={`/${locale}/`}>{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink href={`/${locale}/`}>Home</HeaderLink>
+			<HeaderLink href={`/${locale}/blog/`}>Blog</HeaderLink>
+			<HeaderLink href={`/${locale}/about/`}>About</HeaderLink>
 		</div>
-		<div class="social-links">
+		<div class="utility-links">
+			<div class="language-links" aria-label="Language">
+				{switchers.map((item) => (
+					item.active ? (
+						<span class="language-link active" aria-current="true">{item.label}</span>
+					) : (
+						<a class="language-link" href={item.href} data-locale={item.locale}>{item.label}</a>
+					)
+				))}
+			</div>
 			<a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer">
 				<span class="sr-only">Go to Joseph's GitHub repo</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24"
@@ -23,6 +49,16 @@ import HeaderLink from './HeaderLink.astro';
 			</a>
 		</div>
 	</nav>
+	<script>
+		document.querySelectorAll('[data-locale]').forEach((link) => {
+			link.addEventListener('click', () => {
+				const locale = link.getAttribute('data-locale');
+				if (locale === 'ko' || locale === 'en') {
+					localStorage.setItem('preferredLocale', locale);
+				}
+			});
+		});
+	</script>
 </header>
 <style>
 	header {
@@ -52,6 +88,7 @@ import HeaderLink from './HeaderLink.astro';
 		max-width: 960px;
 		margin: 0 auto;
 		height: 4rem;
+		gap: 1rem;
 	}
 	.internal-links {
 		display: flex;
@@ -76,11 +113,34 @@ import HeaderLink from './HeaderLink.astro';
 		background-color: var(--panel);
 		font-weight: 600;
 	}
-	.social-links {
+	.utility-links {
 		display: flex;
 		align-items: center;
+		gap: 0.5rem;
 	}
-	.social-links a {
+	.language-links {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+	}
+	.language-link {
+		color: var(--muted);
+		padding: 0.35rem 0.45rem;
+		border-radius: 4px;
+		text-decoration: none;
+	}
+	.language-link:hover {
+		color: var(--text);
+		background-color: var(--panel);
+		text-decoration: none;
+	}
+	.language-link.active {
+		color: var(--green);
+		background-color: var(--panel);
+	}
+	.utility-links > a {
 		color: var(--muted);
 		display: flex;
 		align-items: center;
@@ -88,8 +148,24 @@ import HeaderLink from './HeaderLink.astro';
 		border-radius: 4px;
 		transition: all 0.15s ease;
 	}
-	.social-links a:hover {
+	.utility-links > a:hover {
 		color: var(--text);
 		background-color: var(--panel);
+	}
+	@media (max-width: 640px) {
+		header {
+			padding: 0 1rem;
+		}
+		nav {
+			height: auto;
+			min-height: 4rem;
+			flex-wrap: wrap;
+			padding: 0.75rem 0;
+		}
+		.internal-links {
+			order: 3;
+			width: 100%;
+			overflow-x: auto;
+		}
 	}
 </style>
