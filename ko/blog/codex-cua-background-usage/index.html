@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="ko" data-astro-cid-tldeq5d5><head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.ico"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Joseph's Working Notes" href="https://joseph1020.github.io/ko/rss.xml"><meta name="generator" content="Astro v7.0.7"><style>@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/5370656d0181631d.woff") format("woff");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/92b5e6443ed1b565.woff") format("woff");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:99.3717%;ascent-override:80.1033%;descent-override:25.2587%;line-gap-override:0%;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial Bold";src:local("Arial Bold");font-display:swap;font-weight:700;font-style:normal;size-adjust:92.2954%;ascent-override:86.2448%;descent-override:27.1953%;line-gap-override:0%;}:root{--font-atkinson:Atkinson-c7f4c4e8b285552f,"Atkinson-c7f4c4e8b285552f fallback: Arial","Atkinson-c7f4c4e8b285552f fallback: Arial Bold",sans-serif;}</style><link rel="preload" href="/_astro/fonts/5370656d0181631d.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/_astro/fonts/92b5e6443ed1b565.woff" as="font" type="font/woff" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://joseph1020.github.io/ko/blog/codex-cua-background-usage/"><link rel="alternate" hreflang="ko" href="https://joseph1020.github.io/ko/blog/codex-cua-background-usage/"><link rel="alternate" hreflang="en" href="https://joseph1020.github.io/en/blog/codex-cua-background-usage/"><link rel="alternate" hreflang="x-default" href="https://joseph1020.github.io/"><!-- Primary Meta Tags --><title>Codex 사용량이 찝찝할 때 만난 soonsoon 님의 CUA 관찰</title><meta name="description" content="Codex 사용량 문제를 신경 쓰던 중 soonsoon 님의 실제 환경 관찰을 읽고, 무엇을 알 수 있고 무엇은 아직 모르는지 정리한 글입니다."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://joseph1020.github.io/ko/blog/codex-cua-background-usage/"><meta property="og:title" content="Codex 사용량이 찝찝할 때 만난 soonsoon 님의 CUA 관찰"><meta property="og:description" content="Codex 사용량 문제를 신경 쓰던 중 soonsoon 님의 실제 환경 관찰을 읽고, 무엇을 알 수 있고 무엇은 아직 모르는지 정리한 글입니다."><meta property="og:image" content="https://joseph1020.github.io/_astro/blog-placeholder-1.Bx0Zcyzv.jpg"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><style>:root{--bg:#111315;--panel:#181b1f;--border:#2a2f35;--text:#d8dee9;--muted:#7f8792;--accent:#7aa2f7;--green:#9ece6a;--yellow:#e0af68;--red:#f7768e;--font-body:-apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;--font-mono:"SFMono-Regular", Consolas, "Liberation Mono", monospace}*{box-sizing:border-box}body{font-family:var(--font-body);background-color:var(--bg);color:var(--text);text-align:left;margin:0;padding:0;font-size:16px;line-height:1.7}main{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}h1,h2,h3,h4,h5,h6{font-family:var(--font-body);color:var(--text);word-break:keep-all;margin-top:2rem;margin-bottom:1rem;font-weight:700;line-height:1.3}h1{margin-top:1rem;font-size:2.25rem}h2{border-bottom:1px solid var(--border);padding-bottom:.5rem;font-size:1.75rem}h3{font-size:1.4rem}h4{font-size:1.2rem}p,li,blockquote{word-break:keep-all}a{color:var(--accent);text-decoration:none;transition:color .15s}a:hover{color:var(--green);text-decoration:underline}hr{border:none;border-top:1px solid var(--border);margin:2rem 0}blockquote{border-left:3px solid var(--accent);background:var(--panel);color:var(--muted);margin:1.5rem 0;padding:.5rem 1rem}code,pre,.mono{font-family:var(--font-mono);font-size:.9em}a,code,.path,.meta,.url{overflow-wrap:anywhere}code{background-color:var(--panel);border:1px solid var(--border);color:var(--yellow);border-radius:4px;padding:.2rem .4rem}pre{background-color:var(--panel);border:1px solid var(--border);border-radius:4px;margin:1.5rem 0;padding:1rem;overflow-x:auto}pre code{all:unset;font-family:var(--font-mono);color:var(--text)}table{border-collapse:collapse;width:100%;margin:1.5rem 0}.table-wrapper{border:1px solid var(--border);border-radius:4px;width:100%;margin:1.5rem 0;display:block;overflow-x:auto}.table-wrapper table{min-width:600px;margin:0}th,td{text-align:left;border-bottom:1px solid var(--border);padding:.75rem}th{background-color:var(--panel);color:var(--muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem}img{border:1px solid var(--border);border-radius:4px;max-width:100%;height:auto;margin:1.5rem 0;display:block}.sr-only{clip:rect(0, 0, 0, 0);border:0;width:1px;height:1px;margin:-1px;padding:0;position:absolute;overflow:hidden}
+footer[data-astro-cid-jo6i4kqk]{background:var(--bg);border-top:1px solid var(--border);color:var(--muted);text-align:center;font-family:var(--font-mono);padding:3rem 1.5rem;font-size:.85rem}.footer-info[data-astro-cid-jo6i4kqk]{margin-bottom:1rem}.github-link[data-astro-cid-jo6i4kqk]{color:var(--muted);margin-left:.5rem;text-decoration:underline}.github-link[data-astro-cid-jo6i4kqk]:hover{color:var(--text)}.signature[data-astro-cid-jo6i4kqk]{font-family:var(--font-body);color:#4c566a;text-align:center;margin-top:1.5rem;font-size:.8rem;line-height:1.6}a[data-astro-cid-evkijfd6]{text-decoration:none;display:inline-block}a[data-astro-cid-evkijfd6].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-nen7h5rs]{background:var(--bg);border-bottom:1px solid var(--border);margin:0;padding:0 1.5rem}h2[data-astro-cid-nen7h5rs]{font-size:1.1rem;font-family:var(--font-mono);margin:0}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--text);text-decoration:none}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover{color:var(--green);text-decoration:none}nav[data-astro-cid-nen7h5rs]{justify-content:space-between;align-items:center;gap:1rem;max-width:960px;height:4rem;margin:0 auto;display:flex}.internal-links[data-astro-cid-nen7h5rs]{gap:.5rem;display:flex}.internal-links a{color:var(--muted);font-family:var(--font-mono);border-radius:4px;padding:.5rem .75rem;font-size:.95rem;text-decoration:none;transition:all .15s}.internal-links a:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.internal-links a.active{color:var(--green);background-color:var(--panel);font-weight:600}.utility-links[data-astro-cid-nen7h5rs]{align-items:center;gap:.5rem;display:flex}.language-links[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);align-items:center;gap:.25rem;font-size:.8rem;display:flex}.language-link[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;padding:.35rem .45rem;text-decoration:none}.language-link[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.language-link[data-astro-cid-nen7h5rs].active{color:var(--green);background-color:var(--panel)}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;align-items:center;padding:.5rem;transition:all .15s;display:flex}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel)}@media (width<=640px){header[data-astro-cid-nen7h5rs]{padding:0 1rem}nav[data-astro-cid-nen7h5rs]{flex-wrap:wrap;height:auto;min-height:4rem;padding:.75rem 0}.internal-links[data-astro-cid-nen7h5rs]{order:3;width:100%;overflow-x:auto}}
+main[data-astro-cid-tldeq5d5]{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}.post-container[data-astro-cid-tldeq5d5]{width:100%}.terminal-meta[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border:1px solid var(--border);background-color:var(--panel);border-radius:4px;margin-bottom:2rem;padding:1rem;font-size:.85rem}.meta-line[data-astro-cid-tldeq5d5]{margin-bottom:.25rem}.meta-line[data-astro-cid-tldeq5d5]:last-child{margin-bottom:0}.meta-label[data-astro-cid-tldeq5d5]{color:var(--yellow);margin-right:.5rem}.meta-val[data-astro-cid-tldeq5d5] a[data-astro-cid-tldeq5d5]{color:var(--accent)}.post-title[data-astro-cid-tldeq5d5]{word-break:keep-all;overflow-wrap:anywhere;border-bottom:1px solid var(--border);margin-top:1.5rem;margin-bottom:1.5rem;padding-bottom:1rem;font-size:2.25rem;line-height:1.3}.prose-body[data-astro-cid-tldeq5d5]{color:var(--text);font-size:1.05rem;line-height:1.8}.prose-body p{margin-bottom:1.5rem}.prose-body pre{margin:2rem 0}.end-marker[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border-top:1px dashed var(--border);letter-spacing:.05em;margin-top:4rem;padding-top:1.5rem;font-size:.85rem}@media (width<=720px){.post-title[data-astro-cid-tldeq5d5]{font-size:1.75rem}main[data-astro-cid-tldeq5d5]{padding:1.5rem 1rem}}
+</style></head><body data-astro-cid-tldeq5d5><header data-astro-cid-nen7h5rs><nav data-astro-cid-nen7h5rs><h2 data-astro-cid-nen7h5rs><a href="/ko/" data-astro-cid-nen7h5rs>Joseph&#39;s Working Notes</a></h2><div class="internal-links" data-astro-cid-nen7h5rs><a href="/ko/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Home</a><a href="/ko/blog/" class="active" data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Blog</a><a href="/ko/about/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>About</a></div><div class="utility-links" data-astro-cid-nen7h5rs><div class="language-links" aria-label="Language" data-astro-cid-nen7h5rs><a class="language-link" href="/en/blog/codex-cua-background-usage/" data-locale="en" data-astro-cid-nen7h5rs>EN</a><span class="language-link active" aria-current="true" data-astro-cid-nen7h5rs>KO</span></div><a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" data-astro-cid-nen7h5rs><span class="sr-only" data-astro-cid-nen7h5rs>Go to Joseph's GitHub repo</span><svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24" data-astro-cid-nen7h5rs><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-nen7h5rs></path></svg></a></div></nav><script type="module">document.querySelectorAll(`[data-locale]`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.getAttribute(`data-locale`);(t===`ko`||t===`en`)&&localStorage.setItem(`preferredLocale`,t)})});</script></header><main data-astro-cid-tldeq5d5><article class="post-container" data-astro-cid-tldeq5d5><div class="terminal-meta" data-astro-cid-tldeq5d5><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>PATH:</span> /ko/blog/codex-cua-background-usage/</div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>DATE:</span> <time datetime="2026-07-08T16:00:00.000Z">Jul 9, 2026</time></div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>STATUS:</span> observed</div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>SOURCE:</span><span class="meta-val" data-astro-cid-tldeq5d5><a href="https://soonsoon.io/openai-codex-cua-background-usage-drain/" target="_blank" rel="noopener noreferrer" data-astro-cid-tldeq5d5>soonsoon.io</a></span></div></div><h1 class="post-title" data-astro-cid-tldeq5d5>Codex 사용량이 찝찝할 때 만난 soonsoon 님의 CUA 관찰</h1><div class="prose-body" data-astro-cid-tldeq5d5><p>최근 Codex 주간 사용량이 예상보다 빠르게 줄어드는 문제를 계속 신경 쓰고 있었습니다.</p>
+<p>프롬프트를 그렇게 많이 던진 것도 아닌 것 같은데 한도가 눈에 띄게 줄어드는 느낌.<br>
+기분 탓인지, 집계 지연인지, Desktop 앱이나 백그라운드 작업 때문인지 선이 잘 안 잡히는 상태였습니다.</p>
+<p>그러다 soonsoon 님의 글을 읽었습니다.</p>
+<blockquote>
+<p><a href="https://soonsoon.io/openai-codex-cua-background-usage-drain/">Codex 사용량이 줄어드는 이유? Computer Use / CUA 백그라운드 작업에서 찾은 힌트</a></p>
+</blockquote>
+<p>반가웠습니다. 그냥 “Codex 사용량이 너무 빨리 줄었다”는 체감담이 아니라,<br>
+실제 macOS 환경에서 실행 중인 프로세스와 로컬 로그를 확인하며 가능한 원인을 좁혀 간 글이었기 때문입니다.</p>
+<p>soonsoon 님의 글에서는 Codex Desktop과 Computer Use, 즉 CUA와 관련된 것으로 보이는 프로세스가<br>
+사용자가 직접 프롬프트를 입력하지 않는 동안에도 계속 실행되고 있었다고 설명합니다.</p>
+<p>대표적으로 언급된 프로세스는 다음과 같습니다.</p>
+<ul>
+<li><code>SkyComputerUseService</code></li>
+<li><code>cua_node/bin/node_repl</code></li>
+<li><code>VideoCaptureService</code></li>
+</ul>
+<p>soonsoon 님은 이 프로세스들이 떠 있던 시기와 주간 사용량이 빠르게 줄어든 시기가<br>
+상당 부분 겹쳐 보였다고 기록했습니다.</p>
+<p>다만 이 점을 곧바로 원인으로 단정하지는 않았습니다.</p>
+<h2 id="여기서부터-조금-찝찝해진다">여기서부터 조금 찝찝해진다</h2>
+<p>그래서 이 대목부터 더 눈이 갔습니다.</p>
+<p>우리가 생각하는 “작업 중”과 애플리케이션 내부에서 실제로 무언가가 실행되는 시간이<br>
+꼭 같지는 않을 수 있다는 것.</p>
+<p>일반적으로 우리는 프롬프트를 입력하고 결과를 기다리는 시간을<br>
+AI 도구를 사용한 시간으로 생각합니다.</p>
+<p>하지만 Codex Desktop처럼 다음 기능을 함께 사용하는 환경에서는 이야기가 달라질 수 있습니다.</p>
+<ul>
+<li>화면 상태 확인</li>
+<li>데스크톱 애플리케이션 조작</li>
+<li>브라우저 사용</li>
+<li>화면 캡처</li>
+<li>보조 프로세스 실행</li>
+<li>작업 상태 유지</li>
+<li>스레드 생성과 종료</li>
+</ul>
+<p>OpenAI 공식 문서에 따르면 Computer Use는 Codex가 macOS나 Windows의 그래픽 인터페이스를<br>
+직접 보고 조작할 수 있도록 하는 기능입니다.</p>
+<p>macOS에서는 화면 기록과 손쉬운 사용 권한이 필요하고,<br>
+Codex가 화면을 확인하고 클릭하거나 입력할 수 있도록 별도의 실행 환경이 사용됩니다.</p>
+<p>따라서 Computer Use가 활성화된 상태에서는<br>
+일반적인 CLI 작업보다 더 많은 백그라운드 구성요소가 움직이는 것 자체는 자연스럽습니다.</p>
+<p>문제는 사용자가 작업을 끝냈다고 생각한 뒤에도<br>
+그 활동이 계속 유지되는지, 그리고 그것이 실제 사용량 계산에 포함되는지를<br>
+사용자 입장에서 명확히 확인하기 어렵다는 점입니다.</p>
+<h2 id="겹친다고-곧-원인은-아니다">겹친다고 곧 원인은 아니다</h2>
+<p>soonsoon 님의 글에서도 가장 조심스럽게 선을 긋는 부분으로 느껴집니다.</p>
+<p>백그라운드 프로세스가 실행된 시점과 사용량 감소가 겹쳤다는 것은<br>
+분명 확인해 볼 가치가 있는 신호입니다.</p>
+<p>하지만 그것만으로 다음과 같이 단정할 수는 없습니다.</p>
+<blockquote>
+<p>Computer Use 프로세스가 주간 사용량을 직접 소진했다.</p>
+</blockquote>
+<p>사용량 감소에는 여러 가능성이 함께 존재할 수 있습니다.</p>
+<ul>
+<li>사용량 집계 지연</li>
+<li>Codex Desktop 작업</li>
+<li>CLI 실행</li>
+<li>IDE 확장 기능</li>
+<li>자동 검토</li>
+<li>서브에이전트</li>
+<li>재시도된 작업</li>
+<li>중단되지 않은 세션</li>
+<li>Computer Use 백그라운드 실행</li>
+</ul>
+<p>실제로 OpenAI는 Codex 사용량 한도가 예상보다 빠르게 소진되는 문제를<br>
+공식 상태 페이지에 게시한 적도 있습니다.</p>
+<ul>
+<li><a href="https://status.openai.com/incidents/01KW2E6W0503W4NXJNCVAG8V6T">OpenAI Status: Codex Usage Limits Depleting Faster Than Expected</a></li>
+</ul>
+<p>따라서 특정 로컬 프로세스 하나를 원인으로 찍기보다는,<br>
+제품 측 사용량 집계 문제와 로컬 실행 상태를 같이 보는 쪽이 더 맞아 보입니다.</p>
+<h2 id="그럼-나는-뭘-볼까">그럼 나는 뭘 볼까</h2>
+<p>비슷한 현상이 있다면 저는 일단 아래를 보게 될 것 같습니다.</p>
+<h3 id="1-codex-desktop을-완전히-종료했는가">1. Codex Desktop을 완전히 종료했는가</h3>
+<p>창만 닫은 것인지, 애플리케이션 자체가 종료된 것인지 먼저 갈라 봐야 합니다.</p>
+<p>macOS에서는 창을 닫아도 앱 프로세스가 계속 실행되는 경우가 흔합니다.</p>
+<h3 id="2-computer-use가-켜져-있는가">2. Computer Use가 켜져 있는가</h3>
+<p>Computer Use를 켰을 때와 껐을 때, 사용량 흐름이 달라지는지도 비교해 봐야죠.</p>
+<h3 id="3-관련-프로세스가-계속-남아-있는가">3. 관련 프로세스가 계속 남아 있는가</h3>
+<p>Activity Monitor에서 이런 프로세스들이 아직 남아 있는지 볼 수 있습니다.</p>
+<ul>
+<li><code>SkyComputerUseService</code></li>
+<li><code>node_repl</code></li>
+<li><code>VideoCaptureService</code></li>
+</ul>
+<p>다만 프로세스가 존재한다는 사실만으로<br>
+사용량을 소비하고 있다고 판단해서는 안 됩니다.</p>
+<h3 id="4-사용량-변화를-시간대별로-기록했는가">4. 사용량 변화를 시간대별로 기록했는가</h3>
+<p>막연한 체감만 붙잡고 있는 것보다는, 아래처럼 시간대별로 기록해 두는 편이 낫더라고요.</p>
+<table>
+<thead>
+<tr>
+<th>시각</th>
+<th>Codex 상태</th>
+<th>Computer Use</th>
+<th>직접 실행 작업</th>
+<th>사용량 변화</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>09:00</td>
+<td>실행</td>
+<td>켜짐</td>
+<td>문서 검토</td>
+<td>기준값</td>
+</tr>
+<tr>
+<td>12:00</td>
+<td>유휴</td>
+<td>켜짐</td>
+<td>없음</td>
+<td>변화 확인</td>
+</tr>
+<tr>
+<td>15:00</td>
+<td>종료</td>
+<td>꺼짐</td>
+<td>없음</td>
+<td>변화 확인</td>
+</tr>
+</tbody>
+</table>
+<p>이렇게 하면 단순한 인상과 실제 변화를 구분하기가 조금 쉬워집니다.</p>
+<h2 id="제가-얻은-결론">제가 얻은 결론</h2>
+<p>soonsoon 님의 글은 Computer Use가 사용량 소진의 원인이라고 증명한 글은 아닙니다.</p>
+<p>오히려 더 중요한 메시지는 다음이라고 생각합니다.</p>
+<blockquote>
+<p>AI 도구의 사용량을 이해하려면 프롬프트 수만 볼 것이 아니라<br>
+애플리케이션, 백그라운드 세션, 자동 작업과 보조 프로세스까지 함께 봐야 한다.</p>
+</blockquote>
+<p>Codex처럼 CLI, Desktop, IDE, Computer Use, 자동 검토와 서브에이전트가<br>
+하나의 사용량 체계 안에서 함께 움직이는 환경에서는<br>
+사용자가 어느 기능에서 얼마나 사용했는지 구분하기 어렵습니다.</p>
+<p>따라서 이런 실증적 관찰 기록은 공식적인 원인 분석을 대신할 수는 없지만,<br>
+저처럼 같은 문제를 찝찝하게 보고 있던 사람에게는 꽤 실용적인 출발점이 됩니다.</p>
+<p>저 역시 앞으로 Codex 사용량이 예상과 다르게 움직일 때는<br>
+단순히 프롬프트를 많이 사용했는지만 보지 않고<br>
+Desktop 앱, Computer Use 설정, 백그라운드 프로세스와 실행 기록을 함께 확인해 볼 생각입니다.</p>
+<hr>
+<p>원문:</p>
+<ul>
+<li><a href="https://soonsoon.io/openai-codex-cua-background-usage-drain/">Codex 사용량이 줄어드는 이유? Computer Use / CUA 백그라운드 작업에서 찾은 힌트</a></li>
+</ul>
+<p>참고:</p>
+<ul>
+<li><a href="https://developers.openai.com/codex/app/computer-use">OpenAI Codex Computer Use 공식 문서</a></li>
+</ul>
+</div><div class="end-marker" data-astro-cid-tldeq5d5>// end of note</div></article></main><footer data-astro-cid-jo6i4kqk><div class="footer-info" data-astro-cid-jo6i4kqk>&copy; 2026 Joseph Kim.<a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" class="github-link" data-astro-cid-jo6i4kqk>GitHub</a></div><div class="signature" data-astro-cid-jo6i4kqk>돌아는 갑니다.<br data-astro-cid-jo6i4kqk>계속 쓸지는 모르겠습니다.</div></footer></body></html>
