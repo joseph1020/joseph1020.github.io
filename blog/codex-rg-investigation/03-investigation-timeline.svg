@@ -1,0 +1,183 @@
+<!-- rg investigation question timeline asset. -->
+<svg id="codex-rg-investigation-timeline" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" viewBox="0 0 720 510">
+  <title id="title">Changing the question</title>
+  <desc id="desc">A three-phase timeline showing the investigation moving from any rg to the one Codex actually ran.</desc>
+  <style>
+    :root {
+      color-scheme: dark;
+      --node-bg: #15191d;
+      --panel: #20262b;
+      --panel-strong: #24303a;
+      --text: #f2f5f7;
+      --muted: #aeb8c2;
+      --line: #62717d;
+      --accent: #6ab7ff;
+      --accent-soft: #142536;
+    }
+
+    .phase {
+      fill: var(--panel);
+      stroke: var(--line);
+      stroke-width: 1.2;
+      rx: 10;
+    }
+
+    .phase-emphasis {
+      fill: var(--panel-strong);
+      stroke: var(--accent);
+      stroke-width: 1.6;
+    }
+
+    .label {
+      fill: var(--muted);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .step {
+      fill: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 20px;
+      font-weight: 620;
+      letter-spacing: 0;
+    }
+
+    .note {
+      fill: var(--muted);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      font-weight: 450;
+      letter-spacing: 0;
+    }
+
+    .pivot {
+      fill: var(--accent);
+      font-size: 24px;
+      font-weight: 760;
+    }
+
+    .connector,
+    .flow {
+      fill: none;
+      stroke: var(--line);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .connector {
+      stroke-width: 1.4;
+    }
+
+    .flow {
+      stroke-width: 1.5;
+    }
+
+    .node {
+      fill: var(--node-bg);
+      stroke: var(--line);
+      stroke-width: 1.4;
+    }
+
+    .node-accent {
+      fill: var(--accent-soft);
+      stroke: var(--accent);
+      stroke-width: 1.8;
+    }
+
+    .num {
+      fill: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .num-accent {
+      fill: var(--accent);
+    }
+
+    .rg {
+      fill: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 760;
+    }
+
+    .title {
+      fill: var(--muted);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      font-weight: 760;
+      letter-spacing: 0.04em;
+    }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
+      <path d="M1 1 L7 4 L1 7" fill="none" stroke="#62717d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <g id="timeline-frame" transform="translate(36 32)">
+    <text class="title" x="0" y="14">Changing the question</text>
+    <text class="note" x="0" y="46">From any <tspan class="rg">rg</tspan> to the one Codex actually ran.</text>
+
+    <g id="phase-symptom" transform="translate(0 76)">
+      <rect class="phase" width="312" height="172"/>
+      <text class="label" x="22" y="32">1. Symptom</text>
+      <g id="step-popup" transform="translate(24 62)">
+        <circle class="node" cx="10" cy="10" r="9"/>
+        <text class="num" x="6.5" y="14">1</text>
+        <text class="step" x="34" y="17">Popup appears</text>
+        <text class="note" x="34" y="42">“<tspan class="rg">rg</tspan>” Not Opened. Again.</text>
+      </g>
+      <path class="connector" d="M34 104 V126"/>
+      <g id="step-codex-continues" transform="translate(24 126)">
+        <circle class="node" cx="10" cy="10" r="9"/>
+        <text class="num" x="6.5" y="14">2</text>
+        <text class="step" x="34" y="17">Codex continues</text>
+      </g>
+    </g>
+
+    <path class="flow" marker-end="url(#arrowhead)" d="M312 162 H334"/>
+
+    <g id="phase-initial-investigation" transform="translate(338 76)">
+      <rect class="phase" width="312" height="172"/>
+      <text class="label" x="22" y="32">2. Initial investigation</text>
+      <g id="step-known-copies" transform="translate(24 72)">
+        <circle class="node" cx="10" cy="10" r="9"/>
+        <text class="num" x="6.5" y="14">3</text>
+        <text class="step" x="34" y="17">Known <tspan class="rg">rg</tspan> copies</text>
+      </g>
+      <path class="connector" d="M34 96 V118"/>
+      <g id="step-no-quarantine" transform="translate(24 118)">
+        <circle class="node" cx="10" cy="10" r="9"/>
+        <text class="num" x="6.5" y="14">4</text>
+        <text class="step" x="34" y="17">No quarantine found</text>
+      </g>
+    </g>
+
+    <path class="flow" marker-end="url(#arrowhead)" d="M494 248 V280"/>
+
+    <g id="phase-better-question" transform="translate(0 280)">
+      <rect class="phase phase-emphasis" width="650" height="176"/>
+      <text class="label" x="24" y="34">3. Better question</text>
+      <g id="step-wrong-target-question" transform="translate(26 72)">
+        <circle class="node" cx="10" cy="10" r="9"/>
+        <text class="num" x="6.5" y="14">5</text>
+        <text class="step" x="34" y="10">Case closed?</text>
+        <text class="note" x="34" y="36">The popup returned.</text>
+        <text class="note" x="34" y="60">Before: Where is <tspan class="rg">rg</tspan>?</text>
+      </g>
+      <path class="connector" d="M298 82 H350"/>
+      <g id="step-exact-executable-question" transform="translate(360 59)">
+        <circle class="node-accent" cx="10" cy="17" r="10"/>
+        <text class="num num-accent" x="6.5" y="21">6</text>
+        <text class="label" x="36" y="-8">Better question</text>
+        <text class="step pivot" x="36" y="20">Which <tspan class="rg">rg</tspan> does</text>
+        <text class="step pivot" x="36" y="50">Codex execute?</text>
+      </g>
+    </g>
+  </g>
+</svg>
