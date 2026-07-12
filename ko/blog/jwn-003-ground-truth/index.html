@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko" data-astro-cid-tldeq5d5><head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.ico"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Joseph's Working Notes" href="https://joseph1020.github.io/ko/rss.xml"><meta name="generator" content="Astro v7.0.7"><style>@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/5370656d0181631d.woff") format("woff");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/92b5e6443ed1b565.woff") format("woff");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:99.3717%;ascent-override:80.1033%;descent-override:25.2587%;line-gap-override:0%;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial Bold";src:local("Arial Bold");font-display:swap;font-weight:700;font-style:normal;size-adjust:92.2954%;ascent-override:86.2448%;descent-override:27.1953%;line-gap-override:0%;}:root{--font-atkinson:Atkinson-c7f4c4e8b285552f,"Atkinson-c7f4c4e8b285552f fallback: Arial","Atkinson-c7f4c4e8b285552f fallback: Arial Bold",sans-serif;}</style><link rel="preload" href="/_astro/fonts/5370656d0181631d.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/_astro/fonts/92b5e6443ed1b565.woff" as="font" type="font/woff" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://joseph1020.github.io/ko/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="ko" href="https://joseph1020.github.io/ko/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="en" href="https://joseph1020.github.io/en/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="x-default" href="https://joseph1020.github.io/"><!-- Primary Meta Tags --><title>두 AI가 같은 답에 도달했지만 틀렸다</title><meta name="description" content="세탁기 프로그램 사진 판독에서 두 AI의 교차 검토가 동일한 오답으로 수렴한 과정과, 사용자 확인으로 Ground Truth를 확정한 사례를 기록합니다."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://joseph1020.github.io/ko/blog/jwn-003-ground-truth/"><meta property="og:title" content="두 AI가 같은 답에 도달했지만 틀렸다"><meta property="og:description" content="세탁기 프로그램 사진 판독에서 두 AI의 교차 검토가 동일한 오답으로 수렴한 과정과, 사용자 확인으로 Ground Truth를 확정한 사례를 기록합니다."><meta property="og:image" content="https://joseph1020.github.io/_astro/blog-placeholder-1.Bx0Zcyzv.jpg"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><style>:root{--bg:#111315;--panel:#181b1f;--border:#2a2f35;--text:#d8dee9;--muted:#7f8792;--accent:#7aa2f7;--green:#9ece6a;--yellow:#e0af68;--red:#f7768e;--font-body:-apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;--font-mono:"SFMono-Regular", Consolas, "Liberation Mono", monospace}*{box-sizing:border-box}html{scrollbar-gutter:stable}body{font-family:var(--font-body);background-color:var(--bg);color:var(--text);text-align:left;margin:0;padding:0;font-size:16px;line-height:1.7}main{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}h1,h2,h3,h4,h5,h6{font-family:var(--font-body);color:var(--text);word-break:keep-all;margin-top:2rem;margin-bottom:1rem;font-weight:700;line-height:1.3}h1{margin-top:1rem;font-size:2.25rem}h2{border-bottom:1px solid var(--border);padding-bottom:.5rem;font-size:1.75rem}h3{font-size:1.4rem}h4{font-size:1.2rem}p,li,blockquote{word-break:keep-all}a{color:var(--accent);text-decoration:none;transition:color .15s}a:hover{color:var(--green);text-decoration:underline}hr{border:none;border-top:1px solid var(--border);margin:2rem 0}blockquote{border-left:3px solid var(--accent);background:var(--panel);color:var(--muted);margin:1.5rem 0;padding:.5rem 1rem}code,pre,.mono{font-family:var(--font-mono);font-size:.9em}a,code,.path,.meta,.url{overflow-wrap:anywhere}code{background-color:var(--panel);border:1px solid var(--border);color:var(--yellow);border-radius:4px;padding:.2rem .4rem}pre{background-color:var(--panel);border:1px solid var(--border);border-radius:4px;margin:1.5rem 0;padding:1rem;overflow-x:auto}pre code{all:unset;font-family:var(--font-mono);color:var(--text)}table{border-collapse:collapse;width:100%;margin:1.5rem 0}.table-wrapper{border:1px solid var(--border);border-radius:4px;width:100%;margin:1.5rem 0;display:block;overflow-x:auto}.table-wrapper table{min-width:600px;margin:0}th,td{text-align:left;border-bottom:1px solid var(--border);padding:.75rem}th{background-color:var(--panel);color:var(--muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem}img{border:1px solid var(--border);border-radius:4px;max-width:100%;height:auto;margin:1.5rem 0;display:block}img[src$="/blog/codex-rg-investigation/02-popup-initial.png"]{width:45%;max-width:100%;margin-left:auto;margin-right:auto}.sr-only{clip:rect(0, 0, 0, 0);border:0;width:1px;height:1px;margin:-1px;padding:0;position:absolute;overflow:hidden}
+footer[data-astro-cid-jo6i4kqk]{background:var(--bg);border-top:1px solid var(--border);color:var(--muted);text-align:center;font-family:var(--font-mono);padding:3rem 1.5rem;font-size:.85rem}.footer-info[data-astro-cid-jo6i4kqk]{margin-bottom:.5rem}.footer-author[data-astro-cid-jo6i4kqk]{color:var(--muted);margin-bottom:.15rem;font-size:.8rem}.footer-alias[data-astro-cid-jo6i4kqk]{color:var(--muted);opacity:.7;margin-bottom:.75rem;font-size:.72rem}.footer-links[data-astro-cid-jo6i4kqk]{justify-content:center;gap:.5rem;display:flex}.footer-links[data-astro-cid-jo6i4kqk] a[data-astro-cid-jo6i4kqk]{color:var(--muted);text-decoration:underline}.footer-links[data-astro-cid-jo6i4kqk] a[data-astro-cid-jo6i4kqk]:hover{color:var(--text)}a[data-astro-cid-evkijfd6]{text-decoration:none;display:inline-block}a[data-astro-cid-evkijfd6].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-nen7h5rs]{z-index:20;background:color-mix(in srgb, var(--bg) 94%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);margin:0;padding:0 1.5rem;position:sticky;top:0}h2[data-astro-cid-nen7h5rs]{font-size:1.1rem;font-family:var(--font-mono);margin:0}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--text);text-decoration:none}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover{color:var(--green);text-decoration:none}nav[data-astro-cid-nen7h5rs]{justify-content:space-between;align-items:center;gap:1rem;max-width:960px;height:4rem;margin:0 auto;display:flex}.internal-links[data-astro-cid-nen7h5rs]{gap:.5rem;display:flex}.internal-links a{color:var(--muted);font-family:var(--font-mono);border-radius:4px;padding:.5rem .75rem;font-size:.95rem;text-decoration:none;transition:all .15s}.internal-links a:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.internal-links a.active{color:var(--green);background-color:var(--panel);font-weight:600}.utility-links[data-astro-cid-nen7h5rs]{align-items:center;gap:.5rem;display:flex}.language-links[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);align-items:center;gap:.25rem;font-size:.8rem;display:flex}.language-link[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;padding:.35rem .45rem;text-decoration:none}.language-link[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.language-link[data-astro-cid-nen7h5rs].active{color:var(--green);background-color:var(--panel)}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;align-items:center;padding:.5rem;transition:all .15s;display:flex}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel)}@media (width<=640px){header[data-astro-cid-nen7h5rs]{padding:0 1rem}nav[data-astro-cid-nen7h5rs]{flex-wrap:wrap;height:auto;min-height:4rem;padding:.75rem 0}.internal-links[data-astro-cid-nen7h5rs]{order:3;width:100%;overflow-x:auto}}
+main[data-astro-cid-tldeq5d5]{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}.post-container[data-astro-cid-tldeq5d5]{width:100%}.terminal-meta[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border:1px solid var(--border);background-color:var(--panel);border-radius:4px;margin-bottom:2rem;padding:1rem;font-size:.85rem}.meta-line[data-astro-cid-tldeq5d5]{margin-bottom:.25rem}.meta-line[data-astro-cid-tldeq5d5]:last-child{margin-bottom:0}.meta-label[data-astro-cid-tldeq5d5]{color:var(--yellow);margin-right:.5rem}.meta-val[data-astro-cid-tldeq5d5] a[data-astro-cid-tldeq5d5]{color:var(--accent)}.post-title[data-astro-cid-tldeq5d5]{word-break:keep-all;overflow-wrap:anywhere;border-bottom:1px solid var(--border);margin-top:1.5rem;margin-bottom:1.5rem;padding-bottom:1rem;font-size:2.25rem;line-height:1.3}.prose-body[data-astro-cid-tldeq5d5]{color:var(--text);font-size:1.05rem;line-height:1.8}.prose-body p{margin-bottom:1.5rem}.prose-body h2,.prose-body h3,.prose-body h4{scroll-margin-top:5.5rem}.prose-body pre{margin:2rem 0}.post-navigation[data-astro-cid-tldeq5d5]{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin-top:3rem;display:grid}.post-navigation[data-astro-cid-tldeq5d5]:has(.post-nav-link:only-child){grid-template-columns:minmax(0,1fr)}.post-nav-link[data-astro-cid-tldeq5d5]{border:1px solid var(--border);background:var(--panel);border-radius:4px;min-width:0;padding:1rem;text-decoration:none;display:block}.post-nav-link[data-astro-cid-tldeq5d5]:hover{border-color:var(--accent);text-decoration:none}.post-nav-link[data-astro-cid-tldeq5d5].next{text-align:right}.post-nav-label[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--green);margin-bottom:.4rem;font-size:.8rem;display:block}.post-nav-title[data-astro-cid-tldeq5d5]{color:var(--text);overflow-wrap:anywhere;word-break:keep-all;line-height:1.45;display:block}.end-marker[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border-top:1px dashed var(--border);letter-spacing:.05em;margin-top:4rem;padding-top:1.5rem;font-size:.85rem}@media (width<=720px){.post-title[data-astro-cid-tldeq5d5]{font-size:1.75rem}main[data-astro-cid-tldeq5d5]{padding:1.5rem 1rem}.post-navigation[data-astro-cid-tldeq5d5]{grid-template-columns:1fr}.post-nav-link[data-astro-cid-tldeq5d5].next{text-align:left}}
+</style></head><body data-astro-cid-tldeq5d5><header data-astro-cid-nen7h5rs><nav data-astro-cid-nen7h5rs><h2 data-astro-cid-nen7h5rs><a href="/ko/" data-astro-cid-nen7h5rs>Joseph&#39;s Working Notes</a></h2><div class="internal-links" data-astro-cid-nen7h5rs><a href="/ko/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Home</a><a href="/ko/blog/" class="active" data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Blog</a><a href="/ko/about/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>About</a></div><div class="utility-links" data-astro-cid-nen7h5rs><div class="language-links" aria-label="Language" data-astro-cid-nen7h5rs><a class="language-link" href="/en/blog/jwn-003-ground-truth/" data-locale="en" data-astro-cid-nen7h5rs>EN</a><span class="language-link active" aria-current="true" data-astro-cid-nen7h5rs>KO</span></div><a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" data-astro-cid-nen7h5rs><span class="sr-only" data-astro-cid-nen7h5rs>Go to Joseph's GitHub repo</span><svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24" data-astro-cid-nen7h5rs><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-nen7h5rs></path></svg></a><a href="https://www.linkedin.com/in/joseph-jonghyun-kim-009b244a" target="_blank" rel="noopener noreferrer" data-astro-cid-nen7h5rs><span class="sr-only" data-astro-cid-nen7h5rs>Go to Joseph's LinkedIn profile</span><svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" data-astro-cid-nen7h5rs><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27ZM5.32 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.54V9H7.1v11.45ZM22.23 0H1.76C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.76 24h20.47c.97 0 1.77-.77 1.77-1.73V1.73C24 .77 23.2 0 22.23 0Z" data-astro-cid-nen7h5rs></path></svg></a></div></nav><script type="module">document.querySelectorAll(`[data-locale]`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.getAttribute(`data-locale`);(t===`ko`||t===`en`)&&localStorage.setItem(`preferredLocale`,t)})});</script></header><main data-astro-cid-tldeq5d5><article class="post-container" data-astro-cid-tldeq5d5><div class="terminal-meta" data-astro-cid-tldeq5d5><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>PATH:</span> /ko/blog/jwn-003-ground-truth/</div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>DATE:</span> <time datetime="2026-07-11T16:00:00.000Z">2026년 07월 12일</time></div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>STATUS:</span> observed</div></div><h1 class="post-title" data-astro-cid-tldeq5d5>두 AI가 같은 답에 도달했지만 틀렸다</h1><div class="prose-body" data-astro-cid-tldeq5d5><h2 id="세탁기-사진-판독-사례로-살펴본-교차-검토와-ground-truth의-중요성">세탁기 사진 판독 사례로 살펴본 교차 검토와 Ground Truth의 중요성</h2>
+<p>두 AI 모델이 같은 사진을 각각 분석한 뒤 서로의 판단을 검토했습니다.</p>
+<p>처음에는 서로 다른 답을 내놓았지만, 교차 검토를 거치면서 마침내 동일한 결론에 도달했습니다. 일반적으로 두 분석 결과가 하나로 수렴하면 판단의 신뢰도가 높아졌다고 생각하기 쉽습니다.</p>
+<p>그러나 이번에는 두 모델이 함께 도달한 결론이 틀렸습니다.</p>
+<p>최종적으로 정확한 답을 확인할 수 있었던 근거는 모델 간의 합의가 아니라, 사진을 촬영한 사용자가 당시 실제로 어떤 조작을 했는지 확인한 기록이었습니다.</p>
+<p>이 글에서는 세탁기 프로그램 다이얼 사진을 판독하는 과정에서 ChatGPT와 Gemini가 각각 어떤 판단을 내렸고, 두 모델의 교차 검토가 어떻게 동일한 오답으로 수렴했으며, 마지막으로 Ground Truth를 통해 어떻게 사실관계가 확정되었는지 정리합니다.</p>
+<hr>
+<h2 id="1-사진만-보고-프로그램을-판독하다">1. 사진만 보고 프로그램을 판독하다</h2>
+<p>분석 대상은 세탁기의 프로그램 다이얼과 화면에 표시된 시간이 담긴 세 장의 사진이었습니다.</p>
+<p>각 사진의 화면에는 다음 시간이 표시되어 있었습니다.</p>
+<ul>
+<li><code>3:51</code></li>
+<li><code>1:12</code></li>
+<li><code>0:52</code></li>
+</ul>
+<p>확인해야 할 것은 각 시간이 어떤 세탁 프로그램에 해당하는지였습니다.</p>
+<p>사진에는 다이얼의 위치, 프로그램 이름, 화면의 시간이 함께 나타나 있었지만, 촬영 각도와 다이얼 표시 위치를 해석해야 했기 때문에 이미지 판독만으로 프로그램을 확정하는 과정에는 불확실성이 있었습니다.</p>
+<p>ChatGPT와 Gemini는 같은 사진을 보고 각각 독립적으로 분석을 시작했습니다.</p>
+<hr>
+<h2 id="2-처음부터-서로-다른-답이-나왔다">2. 처음부터 서로 다른 답이 나왔다</h2>
+<h3 id="chatgpt의-최초-판단">ChatGPT의 최초 판단</h3>
+<p>ChatGPT는 처음 사진을 다음과 같이 판독했습니다.</p>
+<ul>
+<li>Cotton = <code>3:51</code></li>
+<li>Mix = <code>0:52</code></li>
+<li>Synthetics = <code>1:12</code></li>
+</ul>
+<p>이 판단 가운데 Cotton과 Mix는 나중에 확인된 실제 결과와 일치했습니다.</p>
+<p>문제는 <code>1:12</code>였습니다. ChatGPT는 이를 Synthetics 프로그램으로 보았지만, 실제로는 Allergy Care 프로그램이었습니다.</p>
+<p>즉, 세 개 중 두 개는 맞았지만 하나는 잘못 판독했습니다.</p>
+<h3 id="gemini의-최초-판단">Gemini의 최초 판단</h3>
+<p>Gemini는 사진 간의 관계를 다르게 해석했습니다.</p>
+<ul>
+<li><code>3:51</code> = Allergy Care</li>
+<li><code>1:12</code> = Allergy Care에서 Dry 옵션을 해제한 상태</li>
+<li><code>0:52</code> = Mix</li>
+</ul>
+<p>Gemini는 <code>3:51</code>과 <code>1:12</code>를 서로 다른 프로그램으로 보지 않았습니다. 같은 Allergy Care 프로그램에서 Dry 옵션의 적용 여부가 달라져 시간이 변경된 것으로 해석했습니다.</p>
+<p>이 판단은 사진에서 직접 확인되지 않은 조작을 가정한 것이었습니다.</p>
+<p>실제 촬영 당시에는 Dry 버튼을 변경하지 않았으며, 두 시간은 동일 프로그램의 옵션 차이가 아니라 서로 다른 프로그램에서 표시된 시간이었습니다.</p>
+<p>초기 분석 단계에서 두 모델은 <code>0:52 = Mix</code>에는 동의했지만, <code>3:51</code>과 <code>1:12</code>의 프로그램에 대해서는 서로 다른 설명을 내놓았습니다.</p>
+<hr>
+<h2 id="3-교차-검토가-시작되다">3. 교차 검토가 시작되다</h2>
+<p>서로 다른 결과가 나온 뒤 ChatGPT는 Gemini의 해석을 다시 검토했습니다.</p>
+<p>이 과정에서 ChatGPT는 최초 판단을 일부 변경해 다음과 같이 재판독했습니다.</p>
+<ul>
+<li><code>3:51</code> = Synthetics</li>
+<li><code>1:12</code> = Allergy Care</li>
+<li><code>0:52</code> = Mix</li>
+</ul>
+<p>여기서 <code>1:12 = Allergy Care</code>와 <code>0:52 = Mix</code>는 실제 결과와 일치했습니다.</p>
+<p>그러나 ChatGPT는 처음에 맞게 판독했던 <code>3:51 = Cotton</code>을 오히려 <code>3:51 = Synthetics</code>로 변경했습니다.</p>
+<p>Gemini의 후속 분석에서도 <code>3:51 = Synthetics</code>로 판단이 수정되었습니다.</p>
+<p>결과적으로 두 모델의 판단은 다음과 같이 수렴했습니다.</p>
+<blockquote>
+<p><code>3:51 = Synthetics</code></p>
+</blockquote>
+<p>두 모델이 서로 다른 출발점에서 검토를 진행한 뒤 같은 결론에 도달한 것입니다.</p>
+<p>표면적으로 보면 독립적인 두 분석이 서로를 교정하면서 하나의 답을 찾아낸 것처럼 보일 수 있습니다. 하지만 두 모델이 합의했다는 사실만으로 그 결론이 실제 사실이 되는 것은 아니었습니다.</p>
+<hr>
+<h2 id="4-동일한-결론이-반드시-정확한-결론은-아니다">4. 동일한 결론이 반드시 정확한 결론은 아니다</h2>
+<p>두 모델이 함께 선택한 <code>3:51 = Synthetics</code>는 실제 촬영 내용과 달랐습니다.</p>
+<p>판단의 변화 과정을 단순화하면 다음과 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>최초 판단</th>
+<th>교차 검토 후 판단</th>
+<th>최종 Ground Truth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ChatGPT</td>
+<td>Cotton</td>
+<td>Synthetics</td>
+<td>Cotton</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>Allergy Care</td>
+<td>Synthetics</td>
+<td>Cotton</td>
+</tr>
+</tbody>
+</table>
+<p>ChatGPT는 최초에는 정답을 골랐지만, 다른 모델의 분석을 재검토하는 과정에서 정답을 오답으로 바꾸었습니다.</p>
+<p>Gemini는 최초에도 오답을 냈고, 수정 후에도 다른 오답을 선택했습니다.</p>
+<p>두 모델의 의견이 동일해지면서 불일치는 사라졌지만, 사실과의 불일치는 그대로 남았습니다.</p>
+<p>이 사례에서 교차 검토는 오류를 제거하지 못했고, 두 모델은 같은 오답에 도달했습니다.</p>
+<p>합의가 형성되었다는 사실과 판단이 검증되었다는 사실은 구분해야 합니다.</p>
+<hr>
+<h2 id="5-실제-촬영-조작을-확인하다">5. 실제 촬영 조작을 확인하다</h2>
+<p>최종 판단은 사진을 촬영한 사용자가 당시의 조작을 직접 확인하면서 확정되었습니다.</p>
+<p>촬영 당시에는 세탁기의 옵션 버튼을 변경하지 않았습니다.</p>
+<ul>
+<li>Dry 버튼 변경 없음</li>
+<li>Temp 변경 없음</li>
+<li>다른 옵션 변경 없음</li>
+<li>다이얼만 순차적으로 돌려 각 프로그램을 촬영</li>
+</ul>
+<p>사용자가 확인한 실제 프로그램과 시간은 다음과 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th>프로그램</th>
+<th style="text-align: right">표시 시간</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cotton</td>
+<td style="text-align: right"><code>3:51</code></td>
+</tr>
+<tr>
+<td>Allergy Care</td>
+<td style="text-align: right"><code>1:12</code></td>
+</tr>
+<tr>
+<td>Mix</td>
+<td style="text-align: right"><code>0:52</code></td>
+</tr>
+</tbody>
+</table>
+<p>따라서 최종 Ground Truth는 다음과 같습니다.</p>
+<ul>
+<li><code>3:51</code> 사진은 Cotton 프로그램</li>
+<li><code>1:12</code> 사진은 Allergy Care 프로그램</li>
+<li><code>0:52</code> 사진은 Mix 프로그램</li>
+<li>세 사진 모두 각 프로그램의 기본 설정</li>
+<li>Dry 및 Temp 옵션 변경 없음</li>
+</ul>
+<p>Gemini가 제안했던 “같은 Allergy Care 프로그램에서 Dry 옵션을 해제해 시간이 <code>3:51</code>에서 <code>1:12</code>로 바뀌었다”는 설명은 실제 조작 기록과 일치하지 않았습니다.</p>
+<p>두 모델이 교차 검토 후 합의했던 <code>3:51 = Synthetics</code> 역시 실제 촬영 기록과 일치하지 않았습니다.</p>
+<p>최종적으로 사실을 확정한 것은 이미지 해석의 반복이나 모델 간 합의가 아니라, 촬영 당시의 실제 행동에 대한 확인이었습니다.</p>
+<hr>
+<h2 id="6-왜-두-모델은-같은-오답에-도달했을까">6. 왜 두 모델은 같은 오답에 도달했을까</h2>
+<p>이번 사례만으로 각 모델 내부의 정확한 판단 과정을 모두 재구성할 수는 없습니다. 초기 분석의 전체 원문과 각 검토 단계의 세부 기록이 모두 남아 있지 않기 때문입니다.</p>
+<p>다만 확인된 흐름에서는 몇 가지 특징을 발견할 수 있습니다.</p>
+<h3 id="확인되지-않은-설명이-판단에-포함되었다">확인되지 않은 설명이 판단에 포함되었다</h3>
+<p>Gemini는 <code>3:51</code>과 <code>1:12</code>의 차이를 설명하기 위해 Dry 옵션의 ON/OFF 관계를 제시했습니다.</p>
+<p>그러나 실제로 Dry 버튼이 변경되었다는 정보는 제공되지 않았습니다.</p>
+<p>사진에서 직접 확인할 수 없는 조작을 하나의 가능성으로 제시할 수는 있지만, 이를 확인된 사실처럼 사용하면 이후의 분석 전체가 잘못된 전제 위에서 진행될 수 있습니다.</p>
+<h3 id="재검토-과정에서-기존의-정답이-유지되지-않았다">재검토 과정에서 기존의 정답이 유지되지 않았다</h3>
+<p>ChatGPT의 최초 판단 중 <code>3:51 = Cotton</code>은 정확했습니다.</p>
+<p>그러나 Gemini의 분석을 검토한 뒤 이 판단은 <code>3:51 = Synthetics</code>로 변경되었습니다.</p>
+<p>새로운 증거가 추가되지 않은 상태에서 기존 판단이 변경되었습니다.</p>
+<p>교차 검토는 기존 답을 반드시 바꾸는 과정이 아닙니다. 기존 판단과 새로운 주장 각각의 근거를 독립적으로 비교해야 합니다.</p>
+<h3 id="합의가-검증처럼-작동했다">합의가 검증처럼 작동했다</h3>
+<p>Gemini의 후속 분석에서도 <code>3:51 = Synthetics</code>라는 결론이 나오면서 두 모델의 판단은 같아졌습니다.</p>
+<p>하지만 두 모델이 같은 답을 선택했다는 것은 그 답이 외부 사실과 대조되었다는 뜻이 아닙니다.</p>
+<p>이번 사례에서는 같은 사진과 앞선 해석을 바탕으로 교차 검토한 두 모델이 동일한 오류에 도달했습니다.</p>
+<p>독립적인 근거 없이 형성된 합의는 정확성을 높이는 검증이라기보다 하나의 판단을 반복하는 과정이 될 수 있습니다.</p>
+<hr>
+<h2 id="7-이번-사례에서-얻은-교훈">7. 이번 사례에서 얻은 교훈</h2>
+<h3 id="모델-간-합의와-사실-확인을-구분해야-한다">모델 간 합의와 사실 확인을 구분해야 한다</h3>
+<p>두 모델이 같은 답을 냈다는 것은 참고할 만한 신호입니다.</p>
+<p>그러나 그것만으로 정답이 확정되지는 않습니다.</p>
+<p>특히 이번 사례는 해석의 여지가 있는 시각적 정보를 여러 모델이 동일하게 오해할 가능성이 있음을 보여주었습니다.</p>
+<h3 id="추론과-확인된-사실을-분리해야-한다">추론과 확인된 사실을 분리해야 한다</h3>
+<p>이번 분석에서 확인된 사실은 화면에 표시된 시간과 사용자가 실제로 수행한 조작입니다.</p>
+<p>반면 Dry 옵션 변경이나 특정 프로그램 선택에 관한 일부 설명은 사진을 바탕으로 만들어진 추론이었습니다.</p>
+<p>분석 결과에는 다음 항목이 구분되어야 합니다.</p>
+<ul>
+<li>사진에서 직접 확인되는 정보</li>
+<li>모델이 해석한 정보</li>
+<li>확인되지 않은 가정</li>
+<li>사용자가 확인한 실제 조작</li>
+<li>최종 확정된 Ground Truth</li>
+</ul>
+<p>이 구분이 명확하면 추론이 사실로 굳어지는 것을 방지할 수 있습니다.</p>
+<h3 id="새로운-증거-없이-판단을-변경할-때는-주의해야-한다">새로운 증거 없이 판단을 변경할 때는 주의해야 한다</h3>
+<p>다른 모델이 다른 답을 냈다는 이유만으로 기존 판단을 변경해서는 안 됩니다.</p>
+<p>판단을 수정하려면 어떤 새로운 근거가 기존 근거보다 강한지 설명할 수 있어야 합니다.</p>
+<p>이번 사례에서 ChatGPT는 최초에 맞게 판단한 Cotton을 Synthetics로 변경했지만, 실제 촬영 기록이라는 새로운 증거가 추가된 것은 아니었습니다.</p>
+<h3 id="사용자가-가진-맥락이-가장-강한-증거일-수-있다">사용자가 가진 맥락이 가장 강한 증거일 수 있다</h3>
+<p>사진만 분석하는 모델은 촬영 당시 어떤 버튼이 눌렸는지 직접 알 수 없습니다.</p>
+<p>반면 사진을 촬영한 사용자는 다이얼만 돌렸는지, 옵션 버튼도 변경했는지 확인할 수 있습니다.</p>
+<p>현실 세계의 조작이나 사건을 판독하는 작업에서는 사용자가 가진 현장 정보가 모델의 추론보다 강한 증거가 될 수 있습니다.</p>
+<hr>
+<h2 id="8-더-안전한-검증-방법">8. 더 안전한 검증 방법</h2>
+<p>비슷한 사례를 다시 검토한다면 다음과 같은 순서가 적절합니다.</p>
+<p>첫째, 각 모델이 다른 모델의 답을 보지 않은 상태에서 독립적으로 사진을 판독합니다.</p>
+<p>둘째, 단순한 결론뿐 아니라 다이얼의 표시 위치, 프로그램 이름과의 정렬, 화면의 옵션 상태 등 판단 근거를 함께 기록합니다.</p>
+<p>셋째, 사진에서 직접 확인되는 내용과 모델이 추론한 내용을 분리합니다.</p>
+<p>넷째, 두 모델의 답이 다를 경우 어느 한쪽의 판단을 바로 채택하지 않고 각 판단의 근거를 원본 사진과 다시 대조합니다.</p>
+<p>다섯째, 모델 간 합의가 이루어지더라도 가능한 경우 실제 조작 기록, 제품 설명서, 추가 사진 또는 사용자의 확인과 비교합니다.</p>
+<p>마지막으로 외부 증거와 대조된 결과만 최종 사실로 확정합니다.</p>
+<p>이 절차의 목적은 여러 모델 가운데 다수의 선택을 찾는 것이 아닙니다. 각 판단이 실제 증거와 일치하는지 검증하는 것입니다.</p>
+<hr>
+<h2 id="결론">결론</h2>
+<p>이번 사례에서 ChatGPT와 Gemini는 세탁기 프로그램 사진을 서로 다르게 판독한 뒤 교차 검토를 거쳐 <code>3:51 = Synthetics</code>라는 동일한 결론에 도달했습니다.</p>
+<p>하지만 사용자가 촬영 당시의 실제 조작을 확인한 결과, <code>3:51</code>은 Cotton 프로그램이었습니다.</p>
+<p>최종적으로 확인된 결과는 다음과 같습니다.</p>
+<ul>
+<li>Cotton = <code>3:51</code></li>
+<li>Allergy Care = <code>1:12</code></li>
+<li>Mix = <code>0:52</code></li>
+<li>Dry 버튼 변경 없음</li>
+<li>Temp 변경 없음</li>
+<li>다이얼만 순차적으로 조작</li>
+</ul>
+<p>두 모델의 합의는 분석 과정의 한 단계였지만 최종적인 검증 수단은 아니었습니다.</p>
+<p>이번 사례의 핵심은 AI 모델이 서로 같은 답을 내놓았는지가 아니라, 그 답이 실제 사건을 확인할 수 있는 Ground Truth와 일치하는지를 끝까지 확인해야 한다는 점입니다.</p>
+<blockquote>
+<p>여러 AI가 동일한 결론에 도달하더라도, 합의는 사실의 대체물이 아니다. 최종 판단은 확인 가능한 실제 증거와의 대조를 통해 확정해야 한다.</p>
+</blockquote>
+</div><div class="end-marker" data-astro-cid-tldeq5d5>// end of note</div><nav class="post-navigation" aria-label="Blog post navigation" data-astro-cid-tldeq5d5><a class="post-nav-link previous" href="/ko/blog/codex-rg-investigation/" data-astro-cid-tldeq5d5><span class="post-nav-label" data-astro-cid-tldeq5d5>← 이전 글</span><span class="post-nav-title" data-astro-cid-tldeq5d5>우리가 놓친 `rg`</span></a></nav></article></main><footer data-astro-cid-jo6i4kqk><div class="footer-info" data-astro-cid-jo6i4kqk>&copy; 2026 Joseph&#39;s Working Notes</div><div class="footer-author" data-astro-cid-jo6i4kqk>by Joseph Kim</div><div class="footer-alias" data-astro-cid-jo6i4kqk>aka Jonghyun-Magik</div><div class="footer-links" data-astro-cid-jo6i4kqk><a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" data-astro-cid-jo6i4kqk>GitHub</a><span aria-hidden="true" data-astro-cid-jo6i4kqk>·</span><a href="https://www.linkedin.com/in/joseph-jonghyun-kim-009b244a" target="_blank" rel="noopener noreferrer" data-astro-cid-jo6i4kqk>LinkedIn</a></div></footer></body></html>

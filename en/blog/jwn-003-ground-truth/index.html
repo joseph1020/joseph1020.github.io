@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-tldeq5d5><head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.ico"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Joseph's Working Notes" href="https://joseph1020.github.io/en/rss.xml"><meta name="generator" content="Astro v7.0.7"><style>@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/5370656d0181631d.woff") format("woff");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:Atkinson-c7f4c4e8b285552f;src:url("/_astro/fonts/92b5e6443ed1b565.woff") format("woff");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:99.3717%;ascent-override:80.1033%;descent-override:25.2587%;line-gap-override:0%;}@font-face{font-family:"Atkinson-c7f4c4e8b285552f fallback: Arial Bold";src:local("Arial Bold");font-display:swap;font-weight:700;font-style:normal;size-adjust:92.2954%;ascent-override:86.2448%;descent-override:27.1953%;line-gap-override:0%;}:root{--font-atkinson:Atkinson-c7f4c4e8b285552f,"Atkinson-c7f4c4e8b285552f fallback: Arial","Atkinson-c7f4c4e8b285552f fallback: Arial Bold",sans-serif;}</style><link rel="preload" href="/_astro/fonts/5370656d0181631d.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/_astro/fonts/92b5e6443ed1b565.woff" as="font" type="font/woff" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://joseph1020.github.io/en/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="ko" href="https://joseph1020.github.io/ko/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="en" href="https://joseph1020.github.io/en/blog/jwn-003-ground-truth/"><link rel="alternate" hreflang="x-default" href="https://joseph1020.github.io/"><!-- Primary Meta Tags --><title>When Two AI Models Agreed—and Were Still Wrong</title><meta name="description" content="A washer-program image-reading case in which cross-review converged on the same wrong answer, until the user-established Ground Truth corrected it."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://joseph1020.github.io/en/blog/jwn-003-ground-truth/"><meta property="og:title" content="When Two AI Models Agreed—and Were Still Wrong"><meta property="og:description" content="A washer-program image-reading case in which cross-review converged on the same wrong answer, until the user-established Ground Truth corrected it."><meta property="og:image" content="https://joseph1020.github.io/_astro/blog-placeholder-1.Bx0Zcyzv.jpg"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><style>:root{--bg:#111315;--panel:#181b1f;--border:#2a2f35;--text:#d8dee9;--muted:#7f8792;--accent:#7aa2f7;--green:#9ece6a;--yellow:#e0af68;--red:#f7768e;--font-body:-apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;--font-mono:"SFMono-Regular", Consolas, "Liberation Mono", monospace}*{box-sizing:border-box}html{scrollbar-gutter:stable}body{font-family:var(--font-body);background-color:var(--bg);color:var(--text);text-align:left;margin:0;padding:0;font-size:16px;line-height:1.7}main{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}h1,h2,h3,h4,h5,h6{font-family:var(--font-body);color:var(--text);word-break:keep-all;margin-top:2rem;margin-bottom:1rem;font-weight:700;line-height:1.3}h1{margin-top:1rem;font-size:2.25rem}h2{border-bottom:1px solid var(--border);padding-bottom:.5rem;font-size:1.75rem}h3{font-size:1.4rem}h4{font-size:1.2rem}p,li,blockquote{word-break:keep-all}a{color:var(--accent);text-decoration:none;transition:color .15s}a:hover{color:var(--green);text-decoration:underline}hr{border:none;border-top:1px solid var(--border);margin:2rem 0}blockquote{border-left:3px solid var(--accent);background:var(--panel);color:var(--muted);margin:1.5rem 0;padding:.5rem 1rem}code,pre,.mono{font-family:var(--font-mono);font-size:.9em}a,code,.path,.meta,.url{overflow-wrap:anywhere}code{background-color:var(--panel);border:1px solid var(--border);color:var(--yellow);border-radius:4px;padding:.2rem .4rem}pre{background-color:var(--panel);border:1px solid var(--border);border-radius:4px;margin:1.5rem 0;padding:1rem;overflow-x:auto}pre code{all:unset;font-family:var(--font-mono);color:var(--text)}table{border-collapse:collapse;width:100%;margin:1.5rem 0}.table-wrapper{border:1px solid var(--border);border-radius:4px;width:100%;margin:1.5rem 0;display:block;overflow-x:auto}.table-wrapper table{min-width:600px;margin:0}th,td{text-align:left;border-bottom:1px solid var(--border);padding:.75rem}th{background-color:var(--panel);color:var(--muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem}img{border:1px solid var(--border);border-radius:4px;max-width:100%;height:auto;margin:1.5rem 0;display:block}img[src$="/blog/codex-rg-investigation/02-popup-initial.png"]{width:45%;max-width:100%;margin-left:auto;margin-right:auto}.sr-only{clip:rect(0, 0, 0, 0);border:0;width:1px;height:1px;margin:-1px;padding:0;position:absolute;overflow:hidden}
+footer[data-astro-cid-jo6i4kqk]{background:var(--bg);border-top:1px solid var(--border);color:var(--muted);text-align:center;font-family:var(--font-mono);padding:3rem 1.5rem;font-size:.85rem}.footer-info[data-astro-cid-jo6i4kqk]{margin-bottom:.5rem}.footer-author[data-astro-cid-jo6i4kqk]{color:var(--muted);margin-bottom:.15rem;font-size:.8rem}.footer-alias[data-astro-cid-jo6i4kqk]{color:var(--muted);opacity:.7;margin-bottom:.75rem;font-size:.72rem}.footer-links[data-astro-cid-jo6i4kqk]{justify-content:center;gap:.5rem;display:flex}.footer-links[data-astro-cid-jo6i4kqk] a[data-astro-cid-jo6i4kqk]{color:var(--muted);text-decoration:underline}.footer-links[data-astro-cid-jo6i4kqk] a[data-astro-cid-jo6i4kqk]:hover{color:var(--text)}a[data-astro-cid-evkijfd6]{text-decoration:none;display:inline-block}a[data-astro-cid-evkijfd6].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-nen7h5rs]{z-index:20;background:color-mix(in srgb, var(--bg) 94%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);margin:0;padding:0 1.5rem;position:sticky;top:0}h2[data-astro-cid-nen7h5rs]{font-size:1.1rem;font-family:var(--font-mono);margin:0}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--text);text-decoration:none}h2[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover{color:var(--green);text-decoration:none}nav[data-astro-cid-nen7h5rs]{justify-content:space-between;align-items:center;gap:1rem;max-width:960px;height:4rem;margin:0 auto;display:flex}.internal-links[data-astro-cid-nen7h5rs]{gap:.5rem;display:flex}.internal-links a{color:var(--muted);font-family:var(--font-mono);border-radius:4px;padding:.5rem .75rem;font-size:.95rem;text-decoration:none;transition:all .15s}.internal-links a:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.internal-links a.active{color:var(--green);background-color:var(--panel);font-weight:600}.utility-links[data-astro-cid-nen7h5rs]{align-items:center;gap:.5rem;display:flex}.language-links[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);align-items:center;gap:.25rem;font-size:.8rem;display:flex}.language-link[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;padding:.35rem .45rem;text-decoration:none}.language-link[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel);text-decoration:none}.language-link[data-astro-cid-nen7h5rs].active{color:var(--green);background-color:var(--panel)}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]{color:var(--muted);border-radius:4px;align-items:center;padding:.5rem;transition:all .15s;display:flex}.utility-links[data-astro-cid-nen7h5rs]>a[data-astro-cid-nen7h5rs]:hover{color:var(--text);background-color:var(--panel)}@media (width<=640px){header[data-astro-cid-nen7h5rs]{padding:0 1rem}nav[data-astro-cid-nen7h5rs]{flex-wrap:wrap;height:auto;min-height:4rem;padding:.75rem 0}.internal-links[data-astro-cid-nen7h5rs]{order:3;width:100%;overflow-x:auto}}
+main[data-astro-cid-tldeq5d5]{width:100%;max-width:960px;margin:0 auto;padding:2rem 1.5rem}.post-container[data-astro-cid-tldeq5d5]{width:100%}.terminal-meta[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border:1px solid var(--border);background-color:var(--panel);border-radius:4px;margin-bottom:2rem;padding:1rem;font-size:.85rem}.meta-line[data-astro-cid-tldeq5d5]{margin-bottom:.25rem}.meta-line[data-astro-cid-tldeq5d5]:last-child{margin-bottom:0}.meta-label[data-astro-cid-tldeq5d5]{color:var(--yellow);margin-right:.5rem}.meta-val[data-astro-cid-tldeq5d5] a[data-astro-cid-tldeq5d5]{color:var(--accent)}.post-title[data-astro-cid-tldeq5d5]{word-break:keep-all;overflow-wrap:anywhere;border-bottom:1px solid var(--border);margin-top:1.5rem;margin-bottom:1.5rem;padding-bottom:1rem;font-size:2.25rem;line-height:1.3}.prose-body[data-astro-cid-tldeq5d5]{color:var(--text);font-size:1.05rem;line-height:1.8}.prose-body p{margin-bottom:1.5rem}.prose-body h2,.prose-body h3,.prose-body h4{scroll-margin-top:5.5rem}.prose-body pre{margin:2rem 0}.post-navigation[data-astro-cid-tldeq5d5]{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin-top:3rem;display:grid}.post-navigation[data-astro-cid-tldeq5d5]:has(.post-nav-link:only-child){grid-template-columns:minmax(0,1fr)}.post-nav-link[data-astro-cid-tldeq5d5]{border:1px solid var(--border);background:var(--panel);border-radius:4px;min-width:0;padding:1rem;text-decoration:none;display:block}.post-nav-link[data-astro-cid-tldeq5d5]:hover{border-color:var(--accent);text-decoration:none}.post-nav-link[data-astro-cid-tldeq5d5].next{text-align:right}.post-nav-label[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--green);margin-bottom:.4rem;font-size:.8rem;display:block}.post-nav-title[data-astro-cid-tldeq5d5]{color:var(--text);overflow-wrap:anywhere;word-break:keep-all;line-height:1.45;display:block}.end-marker[data-astro-cid-tldeq5d5]{font-family:var(--font-mono);color:var(--muted);border-top:1px dashed var(--border);letter-spacing:.05em;margin-top:4rem;padding-top:1.5rem;font-size:.85rem}@media (width<=720px){.post-title[data-astro-cid-tldeq5d5]{font-size:1.75rem}main[data-astro-cid-tldeq5d5]{padding:1.5rem 1rem}.post-navigation[data-astro-cid-tldeq5d5]{grid-template-columns:1fr}.post-nav-link[data-astro-cid-tldeq5d5].next{text-align:left}}
+</style></head><body data-astro-cid-tldeq5d5><header data-astro-cid-nen7h5rs><nav data-astro-cid-nen7h5rs><h2 data-astro-cid-nen7h5rs><a href="/en/" data-astro-cid-nen7h5rs>Joseph&#39;s Working Notes</a></h2><div class="internal-links" data-astro-cid-nen7h5rs><a href="/en/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Home</a><a href="/en/blog/" class="active" data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>Blog</a><a href="/en/about/" class data-astro-cid-nen7h5rs="true" data-astro-cid-evkijfd6>About</a></div><div class="utility-links" data-astro-cid-nen7h5rs><div class="language-links" aria-label="Language" data-astro-cid-nen7h5rs><span class="language-link active" aria-current="true" data-astro-cid-nen7h5rs>EN</span><a class="language-link" href="/ko/blog/jwn-003-ground-truth/" data-locale="ko" data-astro-cid-nen7h5rs>KO</a></div><a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" data-astro-cid-nen7h5rs><span class="sr-only" data-astro-cid-nen7h5rs>Go to Joseph's GitHub repo</span><svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24" data-astro-cid-nen7h5rs><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-nen7h5rs></path></svg></a><a href="https://www.linkedin.com/in/joseph-jonghyun-kim-009b244a" target="_blank" rel="noopener noreferrer" data-astro-cid-nen7h5rs><span class="sr-only" data-astro-cid-nen7h5rs>Go to Joseph's LinkedIn profile</span><svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" data-astro-cid-nen7h5rs><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27ZM5.32 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.54V9H7.1v11.45ZM22.23 0H1.76C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.76 24h20.47c.97 0 1.77-.77 1.77-1.73V1.73C24 .77 23.2 0 22.23 0Z" data-astro-cid-nen7h5rs></path></svg></a></div></nav><script type="module">document.querySelectorAll(`[data-locale]`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.getAttribute(`data-locale`);(t===`ko`||t===`en`)&&localStorage.setItem(`preferredLocale`,t)})});</script></header><main data-astro-cid-tldeq5d5><article class="post-container" data-astro-cid-tldeq5d5><div class="terminal-meta" data-astro-cid-tldeq5d5><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>PATH:</span> /en/blog/jwn-003-ground-truth/</div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>DATE:</span> <time datetime="2026-07-11T16:00:00.000Z">Jul 12, 2026</time></div><div class="meta-line" data-astro-cid-tldeq5d5><span class="meta-label" data-astro-cid-tldeq5d5>STATUS:</span> observed</div></div><h1 class="post-title" data-astro-cid-tldeq5d5>When Two AI Models Agreed—and Were Still Wrong</h1><div class="prose-body" data-astro-cid-tldeq5d5><p>Two AI models examined the same washer photos independently, then reviewed each other’s conclusions.</p>
+<p>They began with different answers. After cross-review, they arrived at the same answer. It would be easy to treat that convergence as a sign that the result had become more reliable.</p>
+<p>In this case, the shared conclusion was wrong.</p>
+<p>What established the correct answer was not agreement between the models. It was the user’s record of what they had actually done while taking the photos.</p>
+<p>This post traces how ChatGPT and Gemini read a set of washer program-dial photos, how their cross-review converged on the same error, and how Ground Truth established the final facts.</p>
+<hr>
+<h2 id="1-reading-programs-from-photos-alone">1. Reading Programs from Photos Alone</h2>
+<p>The case involved three photos of a washer’s program dial and display. The display showed these times:</p>
+<ul>
+<li><code>3:51</code></li>
+<li><code>1:12</code></li>
+<li><code>0:52</code></li>
+</ul>
+<p>The question was which washer program each time belonged to.</p>
+<p>Each photo showed the dial position, the program label, and the displayed time. But the camera angle and dial markings still had to be interpreted, so identifying a program from the images alone involved uncertainty.</p>
+<p>ChatGPT and Gemini started by analyzing the same photos independently.</p>
+<hr>
+<h2 id="2-the-initial-readings-did-not-match">2. The Initial Readings Did Not Match</h2>
+<h3 id="chatgpts-initial-reading">ChatGPT’s initial reading</h3>
+<p>ChatGPT first read the photos as follows:</p>
+<ul>
+<li>Cotton = <code>3:51</code></li>
+<li>Mix = <code>0:52</code></li>
+<li>Synthetics = <code>1:12</code></li>
+</ul>
+<p>The Cotton and Mix readings matched the Ground Truth later confirmed by the user.</p>
+<p>The problem was <code>1:12</code>. ChatGPT identified it as Synthetics, but it was actually Allergy Care.</p>
+<p>Two of the three readings were right; one was not.</p>
+<h3 id="geminis-initial-reading">Gemini’s initial reading</h3>
+<p>Gemini interpreted the relationship between the photos differently:</p>
+<ul>
+<li><code>3:51</code> = Allergy Care</li>
+<li><code>1:12</code> = the same Allergy Care program with the Dry option turned off</li>
+<li><code>0:52</code> = Mix</li>
+</ul>
+<p>Gemini did not treat <code>3:51</code> and <code>1:12</code> as different programs. It interpreted them as the same Allergy Care program with different Dry-option states.</p>
+<p>That explanation assumed an operation that could not be confirmed from the photos. The Dry button had not been changed when the photos were taken, and the two times belonged to different programs rather than to option variations within one program.</p>
+<p>At this stage, both models agreed on <code>0:52 = Mix</code>, but they offered different explanations for <code>3:51</code> and <code>1:12</code>.</p>
+<hr>
+<h2 id="3-cross-review-began">3. Cross-Review Began</h2>
+<p>After the differing results appeared, ChatGPT reviewed Gemini’s interpretation.</p>
+<p>It then revised part of its initial reading:</p>
+<ul>
+<li><code>3:51</code> = Synthetics</li>
+<li><code>1:12</code> = Allergy Care</li>
+<li><code>0:52</code> = Mix</li>
+</ul>
+<p>The readings <code>1:12 = Allergy Care</code> and <code>0:52 = Mix</code> matched the actual result.</p>
+<p>But ChatGPT changed its initially correct <code>3:51 = Cotton</code> reading to <code>3:51 = Synthetics</code>.</p>
+<p>In Gemini’s subsequent analysis, the conclusion also changed to <code>3:51 = Synthetics</code>.</p>
+<p>The two models therefore converged on:</p>
+<blockquote>
+<p><code>3:51 = Synthetics</code></p>
+</blockquote>
+<p>They had started from different positions, reviewed one another’s work, and arrived at the same answer.</p>
+<p>On the surface, this can look like two independent analyses correcting each other. But agreement between the models did not make the conclusion true.</p>
+<hr>
+<h2 id="4-a-shared-conclusion-is-not-necessarily-a-correct-one">4. A Shared Conclusion Is Not Necessarily a Correct One</h2>
+<p>The models’ shared conclusion, <code>3:51 = Synthetics</code>, did not match what had actually happened during the photos.</p>
+<p>The change in judgment can be summarized this way:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Initial reading</th>
+<th>After cross-review</th>
+<th>Final Ground Truth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ChatGPT</td>
+<td>Cotton</td>
+<td>Synthetics</td>
+<td>Cotton</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>Allergy Care</td>
+<td>Synthetics</td>
+<td>Cotton</td>
+</tr>
+</tbody>
+</table>
+<p>ChatGPT initially selected the correct answer, then changed it to an incorrect one while reviewing the other model’s analysis.</p>
+<p>Gemini was wrong initially and selected a different wrong answer after revision.</p>
+<p>Once their answers matched, their disagreement disappeared. Their mismatch with the facts did not.</p>
+<p>In this case, cross-review did not remove the error. After reviewing the same photos and earlier interpretations, both models reached the same incorrect conclusion.</p>
+<p>Agreement and verification are different things.</p>
+<hr>
+<h2 id="5-confirming-what-was-actually-done">5. Confirming What Was Actually Done</h2>
+<p>The final conclusion was established when the user who took the photos confirmed the actual operations at the time.</p>
+<p>No option buttons were changed:</p>
+<ul>
+<li>No Dry button change</li>
+<li>No Temp change</li>
+<li>No other option change</li>
+<li>Only the dial was turned sequentially to photograph each program</li>
+</ul>
+<p>The programs and times confirmed by the user were:</p>
+<table>
+<thead>
+<tr>
+<th>Program</th>
+<th style="text-align: right">Displayed time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cotton</td>
+<td style="text-align: right"><code>3:51</code></td>
+</tr>
+<tr>
+<td>Allergy Care</td>
+<td style="text-align: right"><code>1:12</code></td>
+</tr>
+<tr>
+<td>Mix</td>
+<td style="text-align: right"><code>0:52</code></td>
+</tr>
+</tbody>
+</table>
+<p>The final Ground Truth was therefore:</p>
+<ul>
+<li>The <code>3:51</code> photo shows the Cotton program</li>
+<li>The <code>1:12</code> photo shows the Allergy Care program</li>
+<li>The <code>0:52</code> photo shows the Mix program</li>
+<li>All three photos show the default settings for their respective programs</li>
+<li>No Dry or Temp option was changed</li>
+</ul>
+<p>Gemini’s explanation that the same Allergy Care program changed from <code>3:51</code> to <code>1:12</code> when Dry was turned off did not match the actual operation record.</p>
+<p>Nor did the models’ shared cross-review conclusion, <code>3:51 = Synthetics</code>.</p>
+<p>The final facts came not from repeated image interpretation or model agreement, but from confirmation of what was actually done when the photos were taken.</p>
+<hr>
+<h2 id="6-why-did-both-models-reach-the-same-wrong-answer">6. Why Did Both Models Reach the Same Wrong Answer?</h2>
+<p>This case does not provide enough material to reconstruct the full internal reasoning of either model. The original complete analyses and detailed records of every review step are not available.</p>
+<p>The confirmed sequence does, however, show several useful patterns.</p>
+<h3 id="an-unverified-explanation-entered-the-analysis">An unverified explanation entered the analysis</h3>
+<p>Gemini used a Dry ON/OFF relationship to explain the difference between <code>3:51</code> and <code>1:12</code>.</p>
+<p>But there was no evidence that the Dry button had changed.</p>
+<p>An operation that cannot be seen in a photo can be offered as a possibility. Treating it as an established fact, however, can place the rest of the analysis on an unsupported premise.</p>
+<h3 id="the-initially-correct-reading-did-not-survive-review">The initially correct reading did not survive review</h3>
+<p>ChatGPT’s initial <code>3:51 = Cotton</code> reading was correct.</p>
+<p>After reviewing Gemini’s analysis, it changed that reading to <code>3:51 = Synthetics</code>.</p>
+<p>No new evidence had been added.</p>
+<p>Cross-review should not automatically replace an existing answer. The evidence for the initial reading and for the new claim must be compared independently.</p>
+<h3 id="agreement-began-to-function-like-verification">Agreement began to function like verification</h3>
+<p>Gemini’s subsequent analysis also concluded <code>3:51 = Synthetics</code>, leaving both models with the same result.</p>
+<p>But choosing the same answer does not mean the answer has been checked against an external fact.</p>
+<p>In this case, the models cross-reviewed the same photos and prior interpretation, then reached the same error. Agreement without independent evidence can become the repetition of one judgment rather than validation of its accuracy.</p>
+<hr>
+<h2 id="7-lessons-from-the-case">7. Lessons from the Case</h2>
+<h3 id="separate-model-agreement-from-fact-checking">Separate model agreement from fact-checking</h3>
+<p>Two models reaching the same answer is a useful signal.</p>
+<p>It is not enough to establish the answer as correct.</p>
+<p>This case shows that multiple models can misread the same visual information in the same way when that information is open to interpretation.</p>
+<h3 id="separate-inference-from-confirmed-facts">Separate inference from confirmed facts</h3>
+<p>The confirmed facts in this analysis were the times shown on the display and the operations the user actually performed.</p>
+<p>Some explanations about a Dry-option change or program selection were instead inferences drawn from the photos.</p>
+<p>An analysis should keep these categories distinct:</p>
+<ul>
+<li>Information directly visible in the photos</li>
+<li>Model interpretations</li>
+<li>Unverified assumptions</li>
+<li>Operations confirmed by the user</li>
+<li>Final Ground Truth</li>
+</ul>
+<p>Making the distinction explicit helps prevent an inference from hardening into a fact.</p>
+<h3 id="be-careful-when-changing-a-judgment-without-new-evidence">Be careful when changing a judgment without new evidence</h3>
+<p>An existing judgment should not change simply because another model gives a different answer.</p>
+<p>To revise it, the new evidence must be explainable as stronger than the evidence already available.</p>
+<p>In this case, ChatGPT changed its correct Cotton reading to Synthetics, but no new evidence from the actual operation record had been added.</p>
+<h3 id="the-users-context-can-be-the-strongest-evidence">The user’s context can be the strongest evidence</h3>
+<p>A model examining photos cannot directly know which buttons were pressed at the time.</p>
+<p>The person who took the photos can confirm whether they only turned the dial or also changed option buttons.</p>
+<p>For work that interprets real-world operations or events, the user’s on-the-ground context can be stronger evidence than a model’s inference.</p>
+<hr>
+<h2 id="8-a-safer-verification-process">8. A Safer Verification Process</h2>
+<p>For a similar case, a safer sequence would be:</p>
+<p>First, have each model read the photos independently without seeing the other model’s answer.</p>
+<p>Second, record not only the conclusion but also the evidence behind it: dial position, alignment with the program name, and any option state visible on the display.</p>
+<p>Third, separate what is directly visible from what the model infers.</p>
+<p>Fourth, if the models disagree, compare the evidence for each reading against the original photos rather than immediately adopting either conclusion.</p>
+<p>Fifth, even after the models agree, compare their result with the actual operation record, product manual, additional photos, or user confirmation when those are available.</p>
+<p>Finally, treat only a result checked against external evidence as the final fact.</p>
+<p>The goal is not to identify which conclusion receives the most model support. It is to verify whether each conclusion matches the actual evidence.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>ChatGPT and Gemini read the washer-program photos differently, then converged through cross-review on <code>3:51 = Synthetics</code>.</p>
+<p>But when the user confirmed the operations performed while taking the photos, <code>3:51</code> was Cotton.</p>
+<p>The final confirmed result was:</p>
+<ul>
+<li>Cotton = <code>3:51</code></li>
+<li>Allergy Care = <code>1:12</code></li>
+<li>Mix = <code>0:52</code></li>
+<li>No Dry button change</li>
+<li>No Temp change</li>
+<li>Only the dial was turned sequentially</li>
+</ul>
+<p>The models’ agreement was one step in the analysis, not the final means of verification.</p>
+<p>The point of this case is not whether AI models produce the same answer. It is whether that answer continues to match Ground Truth that can be confirmed against the actual event.</p>
+<blockquote>
+<p>Even when multiple AI models reach the same conclusion, agreement is not a substitute for fact. The final judgment must be established by comparison with verifiable real-world evidence.</p>
+</blockquote>
+</div><div class="end-marker" data-astro-cid-tldeq5d5>// end of note</div><nav class="post-navigation" aria-label="Blog post navigation" data-astro-cid-tldeq5d5><a class="post-nav-link previous" href="/en/blog/codex-rg-investigation/" data-astro-cid-tldeq5d5><span class="post-nav-label" data-astro-cid-tldeq5d5>← Previous Post</span><span class="post-nav-title" data-astro-cid-tldeq5d5>The `rg` We Didn&#39;t Check</span></a></nav></article></main><footer data-astro-cid-jo6i4kqk><div class="footer-info" data-astro-cid-jo6i4kqk>&copy; 2026 Joseph&#39;s Working Notes</div><div class="footer-author" data-astro-cid-jo6i4kqk>by Joseph Kim</div><div class="footer-alias" data-astro-cid-jo6i4kqk>aka Jonghyun-Magik</div><div class="footer-links" data-astro-cid-jo6i4kqk><a href="https://github.com/joseph1020" target="_blank" rel="noopener noreferrer" data-astro-cid-jo6i4kqk>GitHub</a><span aria-hidden="true" data-astro-cid-jo6i4kqk>·</span><a href="https://www.linkedin.com/in/joseph-jonghyun-kim-009b244a" target="_blank" rel="noopener noreferrer" data-astro-cid-jo6i4kqk>LinkedIn</a></div></footer></body></html>
