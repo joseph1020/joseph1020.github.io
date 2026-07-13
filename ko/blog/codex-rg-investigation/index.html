@@ -13,7 +13,7 @@ main[data-astro-cid-tldeq5d5]{width:100%;max-width:960px;margin:0 auto;padding:2
 <h2 id="팝업은-문제의-전부가-아니었다">팝업은 문제의 전부가 아니었다</h2>
 <p><img src="/blog/codex-rg-investigation/02-popup-initial.png" alt="Initial rg Not Opened popup"></p>
 <p>팝업은 반복적으로 나타났습니다.</p>
-<p>조건도 꽤 좁았습니다. iTerm2에서는 재현되지 않았고, VS Code 통합 터미널에서 Codex를 돌릴 때 일관되게 나타났습니다.</p>
+<p>조건도 꽤 좁았습니다. iTerm2에서는 재현되지 않았고, VS Code 내장 터미널에서 Codex를 돌릴 때 일관되게 나타났습니다.</p>
 <p>처음에는 금방 끝날 줄 알았습니다. 익숙한 보안 팝업이고, 익숙한 이름의 실행 파일이었으니까요.</p>
 <p>하나를 확인했습니다. 아닌 것 같았습니다. 또 하나를 확인했습니다. 이번에도 아니었습니다. 끝난 줄 알았는데 다시 떴고, 그때마다 “아직 아니네”라는 쪽으로 삽질이 밀려났습니다.</p>
 <p>이 시점에서 자연스러운 질문은 하나였습니다.</p>
@@ -63,12 +63,12 @@ main[data-astro-cid-tldeq5d5]{width:100%;max-width:960px;margin:0 auto;padding:2
 <p>그래서 후보를 하나씩 지우는 과정이 길어졌습니다. 같은 이름의 실행 파일을 보고 있었지만, 같은 실행 경로를 보고 있지 않았습니다.</p>
 <h2 id="같은-환경에서-다시-실행해-보기">같은 환경에서 다시 실행해 보기</h2>
 <p>마지막으로 필요한 것은 재현이었습니다.</p>
-<p>Codex가 들고 있던 번들 <code>rg</code>를 VS Code 통합 터미널에서 직접 실행했습니다.</p>
+<p>Codex가 들고 있던 번들 <code>rg</code>를 VS Code 내장 터미널에서 직접 실행했습니다.</p>
 <p><img src="/blog/codex-rg-investigation/04-popup-vscode-reproduced.png" alt="VS Code terminal reproducing the rg popup"></p>
 <p>이 장면이 결정적이었습니다.</p>
 <p>팝업이 바로 나타났습니다.</p>
 <p>너였구나.</p>
-<p>팝업은 VS Code 통합 터미널에서 재현되었습니다. 일반적인 <code>rg</code> 후보들에는 quarantine 속성이 없었습니다. Codex 번들 <code>rg</code>에는 그 속성이 있었습니다. 그리고 그 바이너리를 같은 환경에서 직접 실행하자 같은 팝업이 떴습니다.</p>
+<p>팝업은 VS Code 내장 터미널에서 재현되었습니다. 일반적인 <code>rg</code> 후보들에는 quarantine 속성이 없었습니다. Codex 번들 <code>rg</code>에는 그 속성이 있었습니다. 그리고 그 바이너리를 같은 환경에서 직접 실행하자 같은 팝업이 떴습니다.</p>
 <p>더 이상 “어딘가의 rg 문제일 것 같다”가 아니었습니다.</p>
 <p>Codex가 실제로 실행하는 <code>rg</code>를 찾았고, 그 파일로 증상을 재현했습니다.</p>
 <h2 id="해결보다-중요한-것">해결보다 중요한 것</h2>
